@@ -23,54 +23,11 @@ public class Calc {
 
         for (int i = 0; i < exp.length(); i++) {
             char ch = exp.charAt(i);
-
-            // 숫자 처리 (음수는 별도 조건 확인)
-            if (Character.isDigit(ch) || ch == '-' && isMinusNumber(exp, i)) {
-                int num = 0;
-                boolean isNegative = false;
-
-                // 음수 처리
-                if (ch == '-') {
-                    isNegative = true;
-                    i++;
-                    ch = exp.charAt(i);
-                }
-
-                while (i < exp.length() && Character.isDigit(exp.charAt(i))) {
-                    num = num * 10 + (exp.charAt(i) - '0');
-                    i++;
-                }
-                // 인덱스 조정
-                i--;
-
-                // 음수일 경우 변환
-                if (isNegative) num = -num;
-                valueStack.addLast(num);
-            }
-
-            // 여는 괄호
-            else if (ch == '(') {
-                opStack.addLast(ch);
-            }
-
-            // 닫는 괄호
-            else if (ch == ')') {
-                while (!opStack.isEmpty() && opStack.getLast() != '(') {
-                    valueStack.addLast(binaryOperate());
-                }
-                // 여는 괄호 제거
-                opStack.removeLast();
-            }
-            // 연산자
-            else {
-                // 이미 스택에 있는 연산이 우선순위 높을때 먼저 실행
-                while (!opStack.isEmpty() &&
-                        getPrecedence(opStack.getLast()) >= getPrecedence(ch)) {
-                    valueStack.addLast(binaryOperate());
-                }
-                opStack.addLast(ch);
-            }
-
+            if (Character.isDigit(ch) || ch == '-' && isMinusNumber(exp, i))
+                i = pushNumber(exp, ch, i);// 숫자 처리 (음수는 별도 처리 확인)
+            else if (ch == '(') opStack.addLast(ch);// 여는 괄호
+            else if (ch == ')') flushOps(); // 닫는 괄호
+            else calculatePrecedence(ch);// 연산자
         }
 
         // 남은 연산 처리
@@ -79,6 +36,45 @@ public class Calc {
         }
 
         return valueStack.removeLast();
+    }
+
+    private static void flushOps() {
+        while (!opStack.isEmpty() && opStack.getLast() != '(') {
+            valueStack.addLast(binaryOperate());
+        }
+        // 여는 괄호 제거
+        opStack.removeLast();
+    }
+
+    private static void calculatePrecedence(char ch) {
+        // 이미 스택에 있는 연산이 우선순위 높을 때, 먼저 실행
+        while (!opStack.isEmpty() &&
+                getPrecedence(opStack.getLast()) >= getPrecedence(ch)) {
+            valueStack.addLast(binaryOperate());
+        }
+        opStack.addLast(ch);
+    }
+
+    private static int pushNumber(String exp, char ch, int i) {
+        int num = 0;
+        boolean isNegative = false;
+
+        // 음수 처리
+        if (ch == '-') {
+            isNegative = true;
+            i++;
+        }
+
+        while (i < exp.length() && Character.isDigit(exp.charAt(i))) {
+            num = num * 10 + (exp.charAt(i) - '0');
+            i++;
+        }
+        // 인덱스 조정
+        i--;
+
+        if (isNegative) valueStack.addLast(-num);
+        else valueStack.addLast(num);
+        return i;
     }
 
     private static int binaryOperate() {
