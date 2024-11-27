@@ -39,4 +39,9 @@ public class CalcTest {
     public void plusWithPolynomial() {
         assertEquals(15, Calc.run("3 + 5 + 7"));
     }
+
+    @Test
+    public void plusAndMultiply_multiplyFirst() {
+        assertEquals(28, Calc.run("3 + 5 * 5"));
+    }
 }
