@@ -14,15 +14,7 @@ public class Calc {
                 String operator = exprs.remove(i - 1);
                 int num2 = Integer.parseInt(exprs.remove(i - 1));
 
-                if (operator.equals("+")) {
-                    exprs.add(i - 1, String.valueOf(num1 + num2));
-                } else if (operator.equals("*")) {
-                    exprs.add(i - 1, String.valueOf(num1 * num2));
-                } else if (operator.equals("-")) {
-                    exprs.add(i - 1, String.valueOf(num1 - num2));
-                } else if (operator.equals("/")) {
-                    exprs.add(i - 1, String.valueOf(num1 / num2));
-                }
+                exprs.add(i - 1, String.valueOf(calc(num1, num2, operator)));
             }
         }
 
@@ -32,17 +24,23 @@ public class Calc {
             String operator = exprs.get(i);
             int operand = Integer.parseInt(exprs.get(i + 1));
 
-            if (operator.equals("+")) {
-                answer += operand;
-            } else if (operator.equals("*")) {
-                answer *= operand;
-            } else if (operator.equals("-")) {
-                answer -= operand;
-            } else if (operator.equals("/")) {
-                answer /= operand;
-            }
+            answer = calc(answer, operand, operator);
         }
 
         return answer;
+    }
+
+    private static int calc(int num1, int num2, String operator) {
+        if (operator.equals("+")) {
+            return num1 + num2;
+        } else if (operator.equals("-")) {
+            return num1 - num2;
+        } else if (operator.equals("*")) {
+            return num1 * num2;
+        } else if (operator.equals("/")) {
+            return num1 / num2;
+        }
+
+        return 0;
     }
 }
