@@ -14,7 +14,6 @@ public class CalcTest {
         Calc.clear();
     }
 
-
     @Test
     @DisplayName("3 + 5")
     void plus_success() {
@@ -59,10 +58,10 @@ public class CalcTest {
     }
 
     @Test
-    @DisplayName("((3 + 5))")
+    @DisplayName("((-3 + -5))")
     void parentheses2_exp_success(){
-        int rs = Calc.run("(3 + 5)");
-        assertThat(rs).isEqualTo(8);
+        int rs = Calc.run("(-3 + -5)");
+        assertThat(rs).isEqualTo(-8);
     }
 
     @Test
@@ -77,5 +76,19 @@ public class CalcTest {
     void exp_success(){
         int rs = Calc.run("((3 + 5) * 5 + -10) * 10 / 5");
         assertThat(rs).isEqualTo(60);
+    }
+
+    @Test
+    @DisplayName("((-3 + 5) * 5 + -10) * 10 / 5")
+    void exp_success2(){
+        int rs = Calc.run("((-3 + 5) * 5 + -10) * 10 / 5");
+        assertThat(rs).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("(((((3)))))")
+    void too_many_parentheses(){
+        int rs = Calc.run("(((((3)))))");
+        assertThat(rs).isEqualTo(3);
     }
 }

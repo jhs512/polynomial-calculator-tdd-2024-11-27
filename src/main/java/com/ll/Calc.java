@@ -8,7 +8,6 @@ public class Calc {
     private static final Deque<Integer> valueStack = new ArrayDeque<>();
     private static final Deque<Character> opStack = new ArrayDeque<>();
 
-
     public static int run(String exp) {
         /*
          * 0. 문자열 전체에서 공백 제거(음수 판별 시 오류 제거)
@@ -24,7 +23,6 @@ public class Calc {
 
         for (int i = 0; i < exp.length(); i++) {
             char ch = exp.charAt(i);
-            if (ch == ' ') continue;
 
             // 숫자 처리 (음수는 별도 조건 확인)
             if (Character.isDigit(ch) || ch == '-' && isMinusNumber(exp, i)) {
