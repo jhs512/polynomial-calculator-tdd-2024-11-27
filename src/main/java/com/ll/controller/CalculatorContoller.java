@@ -58,7 +58,7 @@ public class CalculatorContoller {
                     if(str.charAt(i) == ')') check++;
                 }
                 // 만약 닫는 괄호와 숫자가 붙어있을 경우 넣기
-                numList.add(Integer.parseInt(str.replaceAll("\\)", "")));
+                if(!str.replaceAll("\\)", "").isBlank()) numList.add(Integer.parseInt(str.replaceAll("\\)", "")));
                 // 닫는 괄호에 따른 계산 시작
                 for(int i = 0; i < check; i++){
                     result = calculatorService.calculation(strList, numList);
@@ -77,7 +77,7 @@ public class CalculatorContoller {
                     strList.add("(");
                 }
                 // 만약 숫자가 붙어있을 경우 숫자 추가
-                numList.add(Integer.parseInt(str.replaceAll("\\(", "")));
+                if(!str.replaceAll("\\(", "").isBlank()) numList.add(Integer.parseInt(str.replaceAll("\\(", "")));
             }
             // 연산자 추가
             else if(str.matches(REGEX_NOT_NUMBER)){

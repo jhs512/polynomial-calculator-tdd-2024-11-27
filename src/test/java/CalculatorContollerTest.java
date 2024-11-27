@@ -68,4 +68,13 @@ class CalculatorContollerTest {
 
         assertTrue(result == 0);
     }
+
+    @Test
+    @DisplayName("1 + ( 1 - 2 ) = 0")
+    void t8(){
+        CalculatorContoller calculatorContoller = new CalculatorContoller();
+        int result = calculatorContoller.run("1 + ( 1 - 2 )");
+
+        assertTrue(result == 0);
+    }
 }
