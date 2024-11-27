@@ -2,20 +2,24 @@ package org.example;
 
 public class Calc {
     public static int run(String expr) {
-        String[] temp = expr.split("\\s");
-        int num1 = Integer.parseInt(temp[0]);
-        String operator = temp[1];
-        int num2 = Integer.parseInt(temp[2]);
+        String[] exprs = expr.split("\\s");
+        int answer = Integer.parseInt(exprs[0]);
 
-        if (operator.equals("+")) {
-            return num1 + num2;
-        } else if (operator.equals("*")) {
-            return num1 * num2;
-        } else if (operator.equals("-")) {
-            return num1 - num2;
-        } else if (operator.equals("/")) {
-            return num1 / num2;
+        for (int i = 1; i < exprs.length - 1; i += 2) {
+            String operator = exprs[i];
+            int operand = Integer.parseInt(exprs[i + 1]);
+
+            if (operator.equals("+")) {
+                answer += operand;
+            } else if (operator.equals("*")) {
+                answer *= operand;
+            } else if (operator.equals("-")) {
+                answer -= operand;
+            } else if (operator.equals("/")) {
+                answer /= operand;
+            }
         }
-        return 0;
+
+        return answer;
     }
 }

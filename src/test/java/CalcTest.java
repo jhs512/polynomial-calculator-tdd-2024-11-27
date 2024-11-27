@@ -34,4 +34,9 @@ public class CalcTest {
     public void tenDivideFive_equalsTwo() {
         assertEquals(2, Calc.run("10 / 5"));
     }
+
+    @Test
+    public void plusWithPolynomial() {
+        assertEquals(15, Calc.run("3 + 5 + 7"));
+    }
 }
