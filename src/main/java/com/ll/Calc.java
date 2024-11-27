@@ -2,7 +2,7 @@ package com.ll;
 
 
 public class Calc {
-    private static final String[] ops = {"+","/"};
+    private static final String[] ops = {"+", "-", "*", "/"};
 
 
     public static int run(String exp) {
@@ -17,6 +17,7 @@ public class Calc {
                 break;
             }
         }
+
         // 연산자를 찾지 못했거나 피연산자가 부족한 경우 예외 처리
         if (terms == null || terms.length != 2) {
             throw new IllegalArgumentException("유효하지 않은 수식입니다: " + exp);
@@ -25,23 +26,27 @@ public class Calc {
         int term1 = Integer.parseInt(terms[0].trim());
         int term2 = Integer.parseInt(terms[1].trim());
 
-        return switch(operator){
+        return switch (operator) {
             case "\\+" -> term1 + term2;
+            case "-" -> term1 - term2;
+            case "\\*" -> term1 * term2;
             case "/" -> {
-                if(term2 == 0){
+                if (term2 == 0) {
                     throw new ArithmeticException("0으로 나눌수 없음.");
                 }
-                yield term1/ term2;
+                yield term1 / term2;
             }
-            default -> throw new IllegalStateException("지원하지 않는 연산자 : " + operator);
+            default -> throw new IllegalStateException("Unexpected value: " + operator);
         };
 
     }
 
-    private static String getOperator(String op){
-        return switch(op){
+    private static String getOperator(String op) {
+        return switch (op) {
             case "+" -> "\\+";
             case "/" -> "/";
+            case "-" -> "-";
+            case "*" -> "\\*";
             default -> throw new IllegalStateException("지원하지 않는 연산자 : " + op);
         };
     }
