@@ -50,7 +50,7 @@ public class Calculator {
         Stack<Integer> number = new Stack<>();
         Stack<Character> operator = new Stack<>();
 
-        boolean isNegative = false;
+        boolean isNegative = false;     // 음수 판별을 위한 플래그
         for(int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
 
@@ -70,22 +70,17 @@ public class Calculator {
             } else if(c == '(') {
                 operator.push(c);
             } else if (c == ')') {
-                int result = calculate(operator.pop(), number.pop(), number.pop());
-                number.push(result);
+                while(operator.peek() != '(') {
+                    number.push(calculate(operator.pop(), number.pop(), number.pop()));
+                }
                 operator.pop();
-            } else {
-                if(!operator.isEmpty() && (c == '+' || c == '-') && (operator.peek() == '*' || operator.peek() == '/')) {
-                    int result = calculate(operator.pop(), number.pop(), number.pop());
-                    number.push(result);
-                }
-                if(!operator.isEmpty() && (c == '*' || c == '/') && (operator.peek() == '*' || operator.peek() == '/')) {
-                    int result = calculate(operator.pop(), number.pop(), number.pop());
-                    number.push(result);
-                }
-
-                if(c == '-' && isOperator(expression.charAt(i - 1))) {
+            } else if(isOperator(c)){
+                if(c == '-' && (i == 0 || isOperator(expression.charAt(i - 1)) || expression.charAt(i - 1) == '(')) {
                     isNegative = true;
                 } else {
+                    while(!operator.isEmpty() && priority(operator.peek()) >= priority(c)) {
+                        number.push(calculate(operator.pop(), number.pop(), number.pop()));
+                    }
                     operator.push(c);
                 }
 
@@ -93,11 +88,18 @@ public class Calculator {
         }
 
         while(!operator.isEmpty()) {
-            int result = calculate(operator.pop(), number.pop(), number.pop());
-            number.push(result);
+            number.push(calculate(operator.pop(), number.pop(), number.pop()));
         }
 
         return number.pop();
+    }
+
+    private int priority(char op) {
+        return switch (op) {
+            case '+', '-' -> 1;
+            case '*', '/' -> 2;
+            default -> 0;
+        };
     }
 
     private boolean isOperator(char c) {

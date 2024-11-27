@@ -175,7 +175,7 @@ public class CombinedOperationsTest {
         int result = calculator.combinedOperations(expression);
 
         //then
-        assertThat(result).isEqualTo(23);
+        assertThat(result).isEqualTo(28);
     }
 
     @Test
@@ -199,9 +199,7 @@ public class CombinedOperationsTest {
 
         //when
         //then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            calculator.combinedOperations(expression);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> calculator.combinedOperations(expression));
 
     }
 
@@ -213,9 +211,7 @@ public class CombinedOperationsTest {
 
         //when
         //then
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            calculator.combinedOperations(expression);
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> calculator.combinedOperations(expression));
 
     }
 
