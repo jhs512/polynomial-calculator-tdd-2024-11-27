@@ -11,11 +11,19 @@ public class Calculator {
     }
 
     public int run(String str){
+        str = spaceNormalization(str);
         list = preProcessing(str);
         endIdx = list.size()-1;
         parenthesesCalculate();
         calculate(0,endIdx);
         return Integer.parseInt(list.get(0));
+    }
+
+    private String spaceNormalization(String str) {
+        while(str.contains("  ")){
+            str = str.replaceAll("  "," ");
+        }
+        return str;
     }
 
     private List<String> preProcessing(String str) {

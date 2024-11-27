@@ -51,4 +51,13 @@ public class CalculatorTest {
         int result = calculator.run("((3 + 5) * 5 + -10) * 10 / 5");
         assertTrue(result == 60);
     }
+
+    @Test
+    @DisplayName("공백이 2연타로 들어오는 경우")
+    void t7(){
+        Calculator calculator = new Calculator();
+        int result = calculator.run("5 / 2 *   4");
+        assertTrue(result == 8);
+    }
+
 }
