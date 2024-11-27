@@ -64,5 +64,18 @@ public class CalculatorTest {
         assertThat(result).isEqualTo(a / b);
     }
 
+    @Test
+    @DisplayName("사칙연산 테스트 - 파라미터 String으로 받을 경우")
+    void calcTest1() {
+        //given
+        String cal = "10 + 20";
+
+        //when
+        int reslut = calculator.calculate(cal);
+
+        //then
+        assertThat(reslut).isEqualTo(30);
+    }
+
 
 }
