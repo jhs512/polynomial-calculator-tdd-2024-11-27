@@ -58,4 +58,24 @@ public class CalcTest {
         assertThat(rs).isEqualTo(8);
     }
 
+    @Test
+    @DisplayName("((3 + 5))")
+    void parentheses2_exp_success(){
+        int rs = Calc.run("(3 + 5)");
+        assertThat(rs).isEqualTo(8);
+    }
+
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10)")
+    void parentheses3_exp_success(){
+        int rs = Calc.run("((3 + 5) * 5 + -10)");
+        assertThat(rs).isEqualTo(30);
+    }
+
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10) * 10 / 5")
+    void exp_success(){
+        int rs = Calc.run("((3 + 5) * 5 + -10) * 10 / 5");
+        assertThat(rs).isEqualTo(8);
+    }
 }
