@@ -4,9 +4,18 @@ import java.util.Scanner;
 
 public class App {
 
+    private final Scanner scanner;
+
+    public App() {
+        scanner = new Scanner(System.in);
+    }
+
+    public App(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
     public void run() {
         Calculator calculator = Calculator.getInstance();
-        Scanner scanner = new Scanner(System.in);
         String cmd;
 
         while(true) {

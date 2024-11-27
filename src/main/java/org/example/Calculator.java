@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.Arrays;
-
 public class Calculator {
 
     private static final Calculator calculator = new Calculator();
