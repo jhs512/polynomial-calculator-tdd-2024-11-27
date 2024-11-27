@@ -1,130 +1,115 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Calc {
 
-    class Node {
-        String op;
-        Node left;
-        Node right;
 
-
-        public Node(String value) {
-            op=value;
-            left=null;
-            right=null;
-        }
-
-    }
 
     public int run(String input) {
-       int result=0;
-
+       String postfix=infixToPostfix(input);
+       int result=calPostfix(postfix);
        return result;
     }
 
-    public int calDigit(String input) {
-        int result=0;
+    String infixToPostfix(String expression) {
+        StringBuilder postfix = new StringBuilder();
+        Stack<Character> stack = new Stack<>();
 
-        String[] token=makeToken(input);
-        Node root=new Node(token[0]);
+        for(int i=0;i<expression.length();i++) {
+            char ch=expression.charAt(i);
 
-        for(int i=1;i<token.length;i+=2) {
-            String op=token[i];
-            String digit=token[i+1];
+            if(Character.isDigit(ch)) {
+                while (i < expression.length() && Character.isDigit(expression.charAt(i))) {
+                    postfix.append(expression.charAt(i)); // 숫자를 결과에 추가
+                    i++;
+                }
+                postfix.append(' '); // 숫자 구분을 위해 공백 추가
+                i--; //
 
-            Node newNode=new Node(op);
-            newNode.left=root;
-            newNode.right=new Node(digit);
+            }
+            else if(ch=='(') {
+                stack.push(ch);
+            }
+            else if(ch==')') {
+                while(!stack.isEmpty() && stack.peek() !='(') {
+                    postfix.append(stack.pop());
 
-            root=newNode;
+                }
+                stack.pop();
+            } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
+                while(!stack.isEmpty() && precedence(stack.peek()) >=precedence(ch)) {
+                    postfix.append(stack.pop());
+                }
+                stack.push(ch);
+            }
+
+
+
         }
 
-        result =calNode(root);
-
-        return result;
+        while (!stack.isEmpty()) {
+            postfix.append(stack.pop());
+        }
+        return postfix.toString();
     }
 
-    String[] makeToken(String input) {
-
-        final int START =0;
-        final int NUMBER =1;
-        final int OP =2;
-
-        int state=START;
-        StringBuilder token=new StringBuilder();
-        List<String> result=new ArrayList<>();
-
-        for(int i=0;i<input.length();i++) {
-            char c=input.charAt(i);
-
-            switch (state) {
-                case START :
-                    if(Character.isDigit(c) || c =='-') {
-                        token.append(c);
-                        state = NUMBER;
-                    } else if (isOp(c)) {
-                        token.append(c);
-                        state= OP;
-                    }
-                    break;
-                case NUMBER:
-                    if(Character.isDigit(c) ) {
-                        token.append(c);
-                    } else if (isOp(c)) {
-                        result.add(token.toString());
-                        token.setLength(0);
-                        token.append(c);
-                        state=OP;
-                    }
-                    break;
-                case OP:
-                    result.add(token.toString());
-                    token.setLength(0);
-
-                    if(Character.isDigit(c) || c =='-') {
-                        token.append(c);
-                        state=NUMBER;
-                    }
-                    break;
-            }
+    int precedence(char operator) {
+        switch (operator) {
+            case '+':
+            case '-':
+                return 1;
+            case '*':
+            case '/':
+                return 2;
+            case '(':
+                return 0;
+            default:
+                return -1;
         }
-
-        if(token.length() >0) {
-            result.add(token.toString());
-        }
-
-        return result.toArray(new String[0]);
     }
 
-    int calNode(Node node) {
+    int calPostfix(String postfix) {
+        Stack<Integer> stack = new Stack<>();
 
-        if(node.left==null) {
-            return Integer.parseInt(node.op);
+        for (int i = 0; i < postfix.length(); i++) {
+            char ch = postfix.charAt(i);
+
+            // 숫자일 경우 스택에 푸시
+            if (Character.isDigit(ch)) {
+                StringBuilder sb=new StringBuilder();
+                while (i < postfix.length() && Character.isDigit(postfix.charAt(i))) {
+                    sb.append(postfix.charAt(i)); // 숫자를 결과에 추가
+                    i++;
+                }
+                stack.push(Integer.parseInt(sb.toString()));
+
+            } else {
+                // 두 피연산자를 스택에서 팝
+                int b = stack.pop();
+                int a = stack.pop();
+
+                // 연산 수행 후 결과를 스택에 푸시
+                switch (ch) {
+                    case '+':
+                        stack.push(a + b);
+                        break;
+                    case '-':
+                        stack.push(a - b);
+                        break;
+                    case '*':
+                        stack.push(a * b);
+                        break;
+                    case '/':
+                        stack.push(a / b);
+                        break;
+                }
+            }
         }
 
-        int left=calNode(node.left);
-        int right=calNode(node.right);
-
-        switch (node.op) {
-            case "+" -> {
-                return left + right;
-            }
-            case "-" -> {
-                return left - right;
-            }
-            case "*" -> {
-                return left * right;
-            }
-            case "/" -> {
-                return left / right;
-            }
-        }
-
-        return 0;
+        return stack.pop(); // 최종 결과
     }
 
-    boolean isOp(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/';
-    }
 }
+
+
