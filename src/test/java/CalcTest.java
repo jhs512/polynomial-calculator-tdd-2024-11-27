@@ -44,4 +44,14 @@ public class CalcTest {
     public void plusAndMultiply_multiplyFirst() {
         assertEquals(28, Calc.run("3 + 5 * 5"));
     }
+
+    @Test
+    public void calcWithBracket_bracketFirst() {
+        assertEquals(40 , Calc.run("(3 + 5) * 5"));
+    }
+
+    @Test
+    public void calcComplicatedPolynomial()  {
+        assertEquals(60 , Calc.run("((3 + 5) * 5 + -10) * 10 / 5"));
+    }
 }
