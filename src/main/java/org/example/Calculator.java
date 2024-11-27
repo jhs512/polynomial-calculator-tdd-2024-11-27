@@ -32,17 +32,13 @@ public class Calculator {
     public int calculate(char op, int num1, int num2) {
 
         // 연산 결과 리턴
-        switch (op) {
-            case '+':
-                return add(num2, num1);
-            case '-':
-                return subtract(num2, num1);
-            case '*':
-                return multiply(num2, num1);
-            case '/':
-                return divide(num2, num1);
-        }
-        return 0;
+        return switch (op) {
+            case '+' -> add(num2, num1);
+            case '-' -> subtract(num2, num1);
+            case '*' -> multiply(num2, num1);
+            case '/' -> divide(num2, num1);
+            default -> 0;
+        };
     }
 
     public int combinedOperations(String expression) {
@@ -59,18 +55,18 @@ public class Calculator {
             char c = expression.charAt(i);
 
             if(Character.isDigit(c)) {
-                String temp = "";
+                StringBuilder temp = new StringBuilder();
                 if(isNegative) {
-                    temp += "-";
+                    temp.append("-");
                     isNegative = false;
                 }
 
                 while(i < expression.length() && Character.isDigit(expression.charAt(i))) {
-                    temp += expression.charAt(i);
+                    temp.append(expression.charAt(i));
                     i++;
                 }
                 i--;
-                number.push(Integer.parseInt(temp));
+                number.push(Integer.parseInt(temp.toString()));
             } else if(c == '(') {
                 operator.push(c);
             } else if (c == ')') {
@@ -105,10 +101,7 @@ public class Calculator {
     }
 
     private boolean isOperator(char c) {
-        if(c == '+' || c == '-' || c == '*' || c == '/') {
-            return true;
-        }
-        return false;
+        return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
 }
