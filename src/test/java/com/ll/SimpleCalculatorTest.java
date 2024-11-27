@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 public class SimpleCalculatorTest {
     @Test
     @DisplayName("1 + 2 =3")
