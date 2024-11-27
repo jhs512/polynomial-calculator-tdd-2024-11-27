@@ -20,4 +20,6 @@ public class CalcTest {
         int rs = Calc.run("10 / 5");
         assertThat(rs).isEqualTo(2);
     }
+
+
 }
