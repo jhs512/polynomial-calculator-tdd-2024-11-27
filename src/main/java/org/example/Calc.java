@@ -34,8 +34,8 @@ public class Calc {
                     case '*' -> numbers.push(numbers.pop() * num);
                     case '/' -> numbers.push(numbers.pop() / num);
                 }
-                sign = c;
                 num = 0;
+                sign = c;
             }
         }
 
