@@ -20,4 +20,13 @@ class CalculatorTest {
 
         assertThat(rs).isEqualTo(12);
     }
+
+    @Test
+    @DisplayName("곱셈 테스트")
+    public void t2() {
+        int rs = Calculator.run("5*4*3");
+
+        assertThat(rs).isEqualTo(60);
+    }
+
 }
