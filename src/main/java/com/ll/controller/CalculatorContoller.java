@@ -14,8 +14,6 @@ public class CalculatorContoller {
     private static String REGEX_NOT_NUMBER = "[+*/-]";
     // 숫자 (음수 포함) 정규식
     private static String REGEX_NUMBER = "^-?[0-9]*$";
-    // 빈 문자열 정규식
-    private static String REGEX_EMPTY_SPACE = "\\s+";
     // 괄호 앞 부분
     private static String REGEX_BARCKET_FIRST = "[(]";
     // 괄호 뒷 부분
@@ -53,31 +51,14 @@ public class CalculatorContoller {
             // 넣었던 걸 빼야한다.
             // - 먼저 계산해야 되기 때문에
             if(str.matches(REGEX_BARCKET_LAST)) {
-                // 닫는 괄호 체크 변수
-                int check = 0;
-                // 닫는 괄호 갯수 계산
-                for(int i = 0; i < str.length(); i++){
-                    if(str.charAt(i) == ')') check++;
-                }
                 // 만약 닫는 괄호와 숫자가 붙어있을 경우 넣기
-                if(!str.replaceAll(REGEX_BARCKET_LAST, "").isBlank()) numList.add(Integer.parseInt(str.replaceAll("\\)", "")));
+                if(!str.replaceAll(REGEX_BARCKET_LAST, "").isBlank()) numList.add(Integer.parseInt(str.replaceAll(REGEX_BARCKET_LAST, "")));
                 // 닫는 괄호에 따른 계산 시작
-                for(int i = 0; i < check; i++){
-                    result = calculatorService.calculation(strList, numList);
-                }
+                calculatorService.calculation(strList, numList);
             }
             // 괄호 여는 부분일 경우
             else if(str.matches(REGEX_BARCKET_FIRST)){
-                // 괄호 여는 부분 갯수 확인 변수
-                int check = 0;
-                // 괄호 여는 부분 갯수 확인
-                for(int i = 0; i < str.length(); i++){
-                    if(str.charAt(i) == '(') check++;
-                }
-                // 여는 부분 만큼 연산자 리스트에 추가
-                for(int i = 0; i < check; i++){
-                    strList.add("(");
-                }
+                strList.add("(");
                 // 만약 숫자가 붙어있을 경우 숫자 추가
                 if(!str.replaceAll(REGEX_BARCKET_FIRST, "").isBlank()) numList.add(Integer.parseInt(str.replaceAll("\\(", "")));
             }

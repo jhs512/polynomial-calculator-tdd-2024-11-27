@@ -104,4 +104,13 @@ class CalculatorContollerTest {
 
         assertTrue(result == 108);
     }
+
+    @Test
+    @DisplayName("((8+1)*(2+10) = 108")
+    void t12(){
+        CalculatorContoller calculatorContoller = new CalculatorContoller();
+        int result = calculatorContoller.run("((8+1)*(2+10))");
+
+        assertTrue(result == 108);
+    }
 }
