@@ -2,6 +2,15 @@ package org.example;
 
 public class Calculator {
 
+    private static final Calculator calculator = new Calculator();
+
+    public static Calculator getInstance() {
+        return calculator;
+    }
+
+    private Calculator() {
+    }
+
     public int add(int a, int b) {
         return a + b;
     }

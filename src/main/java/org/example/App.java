@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class App {
 
     public void run() {
-        Calculator calculator = new Calculator();
+        Calculator calculator = Calculator.getInstance();
         Scanner scanner = new Scanner(System.in);
         String cmd;
 

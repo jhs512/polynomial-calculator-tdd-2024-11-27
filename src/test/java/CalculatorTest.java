@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 public class CalculatorTest {
 
-    Calculator calculator = new Calculator();
+    Calculator calculator = Calculator.getInstance();
 
     @Test
     @DisplayName("덧셈 테스트")
