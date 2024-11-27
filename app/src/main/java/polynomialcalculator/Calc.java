@@ -7,8 +7,11 @@ public class Calc {
         return num1 + num2;
     } 
 
-    
-    
+    public static int mult(int num1, int num2) {
+
+        return num1 * num2; 
+    }
+
     public static int run(String cal) {
         String oper = "";
         int ans = 0;
@@ -28,6 +31,8 @@ public class Calc {
                     ans = Integer.parseInt(s);
                 } else if (oper.equals("+")) {
                     ans = plus(ans, Integer.parseInt(s));
+                } else if (oper.equals("*")) {
+                    ans = mult(ans, Integer.parseInt(s));
                 } 
             }
         }
