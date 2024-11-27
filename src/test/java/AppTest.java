@@ -5,13 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 import org.example.App;
-import org.example.Calculator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class AppTest {
-
-    Calculator calculator = Calculator.getInstance();
 
     @Test
     @DisplayName("덧셈 테스트")
