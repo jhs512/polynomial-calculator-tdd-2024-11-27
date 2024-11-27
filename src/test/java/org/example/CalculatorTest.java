@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,7 +14,7 @@ class CalculatorTest {
 
     @Test
     @DisplayName("덧셈 테스트")
-    public void t1() {
+    public void t1_1() {
 
         int rs = Calculator.run("5+4+3");
 
@@ -24,11 +22,31 @@ class CalculatorTest {
     }
 
     @Test
+    @DisplayName("음수 덧셈 테스트")
+    public void t1_2() {
+
+        int rs = Calculator.run("5+4+-3");
+
+        assertThat(rs).isEqualTo(6);
+    }
+
+
+    @Test
     @DisplayName("곱셈 테스트")
     public void t2() {
         int rs = Calculator.run("5*4*3");
 
         assertThat(rs).isEqualTo(60);
+    }
+
+    @Test
+    @DisplayName("음수 곱셈 테스트")
+    public void t2_2() {
+        int rs = Calculator.run("5*4*-3");
+        int rs2 = Calculator2.run("5*4*-3");
+
+        assertThat(rs).isEqualTo(-60);
+        assertThat(rs2).isEqualTo(-60);
     }
 
     @Test
@@ -40,13 +58,13 @@ class CalculatorTest {
     }
 
     @Test
-    @DisplayName("Expr에서 숫자만 읽어서 Deque에 넣기")
-    public void t4() {
-        Deque<String> deque = new ArrayDeque<>();
+    @DisplayName("복잡한 괄호 테스트")
+    public void t1() {
 
-        Calculator.addNumberToDeque(deque, "1234abcd", 0);
-
-        assertThat(deque.remove()).isEqualTo("1234");
+        int rs = Calculator.run("((8 - 3) * (5 + 2)) - (10 / 2)");
+        int rs2 = Calculator2.run("((8 - 3) * (5 + 2)) - (10 / 2)");
+        assertThat(rs).isEqualTo(30);
+        assertThat(rs2).isEqualTo(30);
     }
 
 }
