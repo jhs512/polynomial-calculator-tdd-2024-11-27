@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Stack;
+
 public class Calculator {
 
     private static final Calculator calculator = new Calculator();
@@ -27,33 +29,86 @@ public class Calculator {
         return a / b;
     }
 
-    public int calculate(String expression) {
+    public int calculate(char op, int num1, int num2) {
 
+        // 연산 결과 리턴
+        switch (op) {
+            case '+':
+                return add(num2, num1);
+            case '-':
+                return subtract(num2, num1);
+            case '*':
+                return multiply(num2, num1);
+            case '/':
+                return divide(num2, num1);
+        }
+        return 0;
+    }
+
+    public int combinedOperations(String expression) {
         if(expression.isEmpty()) {
             throw new IllegalArgumentException("Empty expression");     // 입력값이 없을 때 예외 던짐
         }
+        expression = expression.replaceAll("\\s+", "");
 
-        expression = expression.replaceAll("\\s+", "");     // 공백 제거
-        String[] split = expression.split("(?<=[-+*/])|(?=[-+*/])");    // 연산자 앞뒤로 자름
+        Stack<Integer> number = new Stack<>();
+        Stack<Character> operator = new Stack<>();
 
-        int num1 = Integer.parseInt(split[0]);
-        int num2 = Integer.parseInt(split[2]);
-        String operator = split[1];
+        boolean isNegative = false;
+        for(int i = 0; i < expression.length(); i++) {
+            char c = expression.charAt(i);
 
-        // 연산 결과 리턴
-        switch (operator) {
-            case "+":
-                return add(num1, num2);
-            case "-":
-                return subtract(num1, num2);
-            case "*":
-                return multiply(num1, num2);
-            case "/":
-                return divide(num1, num2);
-            default:
-                throw new IllegalArgumentException("Unknown operator: " + operator);
+            if(Character.isDigit(c)) {
+                String temp = "";
+                if(isNegative) {
+                    temp += "-";
+                    isNegative = false;
+                }
+
+                while(i < expression.length() && Character.isDigit(expression.charAt(i))) {
+                    temp += expression.charAt(i);
+                    i++;
+                }
+                i--;
+                number.push(Integer.parseInt(temp));
+            } else if(c == '(') {
+                operator.push(c);
+            } else if (c == ')') {
+                int result = calculate(operator.pop(), number.pop(), number.pop());
+                number.push(result);
+                operator.pop();
+            } else {
+                if(!operator.isEmpty() && (c == '+' || c == '-') && (operator.peek() == '*' || operator.peek() == '/')) {
+                    int result = calculate(operator.pop(), number.pop(), number.pop());
+                    number.push(result);
+                }
+                if(!operator.isEmpty() && (c == '*' || c == '/') && (operator.peek() == '*' || operator.peek() == '/')) {
+                    int result = calculate(operator.pop(), number.pop(), number.pop());
+                    number.push(result);
+                }
+
+                if(c == '-' && isOperator(expression.charAt(i - 1))) {
+                    isNegative = true;
+                } else {
+                    operator.push(c);
+                }
+
+            }
         }
 
+        while(!operator.isEmpty()) {
+            int result = calculate(operator.pop(), number.pop(), number.pop());
+            number.push(result);
+        }
+
+        return number.pop();
+    }
+
+    private boolean isOperator(char c) {
+        if(c == '+' || c == '-' || c == '*' || c == '/') {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -65,52 +65,56 @@ public class CalculatorTest {
     }
 
     @Test
-    @DisplayName("사칙연산 테스트1 - 덧셈(파라미터 String으로 받을 경우)")
+    @DisplayName("사칙연산 테스트1 - 덧셈")
     void calcTest1() {
         //given
-        String cal = "10 + 20";
+        int n1 = 10;
+        int n2 = 20;
 
         //when
-        int reslut = calculator.calculate(cal);
+        int reslut = calculator.calculate('+', n2, n1);
 
         //then
         assertThat(reslut).isEqualTo(30);
     }
 
     @Test
-    @DisplayName("사칙연산 테스트2 - 뺄셈(파라미터 String으로 받을 경우)")
+    @DisplayName("사칙연산 테스트2 - 뺄셈")
     void calcTest2() {
         //given
-        String cal = "10 - 20";
+        int n1 = 10;
+        int n2 = 20;
 
         //when
-        int reslut = calculator.calculate(cal);
+        int reslut = calculator.calculate('-', n2, n1);
 
         //then
         assertThat(reslut).isEqualTo(-10);
     }
 
     @Test
-    @DisplayName("사칙연산 테스트3 - 곱셈(파라미터 String으로 받을 경우)")
+    @DisplayName("사칙연산 테스트3 - 곱셈")
     void calcTest3() {
         //given
-        String cal = "10 * 20";
+        int n1 = 10;
+        int n2 = 20;
 
         //when
-        int reslut = calculator.calculate(cal);
+        int reslut = calculator.calculate('*', n2, n1);
 
         //then
         assertThat(reslut).isEqualTo(200);
     }
 
     @Test
-    @DisplayName("사칙연산 테스트4 - 나눗셈(파라미터 String으로 받을 경우)")
+    @DisplayName("사칙연산 테스트4 - 나눗셈")
     void calcTest4() {
         //given
-        String cal = "20 / 10";
+        int n1 = 20;
+        int n2 = 10;
 
         //when
-        int reslut = calculator.calculate(cal);
+        int reslut = calculator.calculate('/', n2, n1);
 
         //then
         assertThat(reslut).isEqualTo(2);

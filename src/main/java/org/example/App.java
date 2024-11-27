@@ -24,7 +24,7 @@ public class App {
 
             if(cmd.equals("exit")) break;   // 종료 조건
 
-            int calculate = calculator.calculate(cmd);
+            int calculate = calculator.combinedOperations(cmd);
             System.out.println("calculate = " + calculate);
         }
     }

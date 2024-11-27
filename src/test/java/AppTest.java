@@ -125,4 +125,27 @@ public class AppTest {
         assertThat(result).contains("calculate = 6");
     }
 
+    @Test
+    @DisplayName("다항식 테스트2")
+    void combinedOperationsTest2() {
+        //given
+        String expression = """
+            ((3 + 5) * 5 + -10) * 10 / 5
+            exit
+            """;
+        ByteArrayInputStream input = new ByteArrayInputStream(expression.getBytes());
+        Scanner scanner = new Scanner(input);
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+
+        //when
+        App app = new App(scanner);
+        app.run();
+
+        //then
+        String result = output.toString().trim();
+        assertThat(result).contains("calculate = 60");
+    }
+
 }
