@@ -13,4 +13,9 @@ public class CalcTest {
     public void tenPlusFive_equalsFifteen() {
         assertEquals(15, Calc.run("10 + 5"));
     }
+
+    @Test
+    public void twentyPlusFive_equalsTwentyFive() {
+        assertEquals(25, Calc.run("20 + 5"));
+    }
 }
