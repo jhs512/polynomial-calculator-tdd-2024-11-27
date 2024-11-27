@@ -6,21 +6,21 @@ package polynomialcalculator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.DisplayName;
+
+// 1순위 : 3+5 = 8
+// 2순위 : 8 *5 = 40
+// 3순위 : 40 - 10 = 30
+// 4순위 : 30 * 10 = 300
+// 5순위 : 300 / 5 = 60
 
 class AppTest {
-    @Test 
-    void appHasAGreeting() {
-        //App classUnderTest = new App();
-        //assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
-
-
-    }
-
     @Test
-    void t1() {
-        //
-        int rs = Calc.run("((3 + 5) * 5 + -10) * 10 / 5"); 
+    @DisplayName("다항식 계산 시작")
+    public void t1() {
+        int rs = Calc.run("((3 + 5) * 5 + -10) * 10 / 5");
+        
+        assertThat(rs).isEqualTo(60);
     }
 }
