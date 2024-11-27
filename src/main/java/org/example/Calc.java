@@ -13,6 +13,8 @@ public class Calc {
             return num1 * num2;
         } else if (operator.equals("-")) {
             return num1 - num2;
+        } else if (operator.equals("/")) {
+            return num1 / num2;
         }
         return 0;
     }
