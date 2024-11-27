@@ -76,6 +76,6 @@ public class CalcTest {
     @DisplayName("((3 + 5) * 5 + -10) * 10 / 5")
     void exp_success(){
         int rs = Calc.run("((3 + 5) * 5 + -10) * 10 / 5");
-        assertThat(rs).isEqualTo(8);
+        assertThat(rs).isEqualTo(60);
     }
 }
