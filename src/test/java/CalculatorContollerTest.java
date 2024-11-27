@@ -77,4 +77,31 @@ class CalculatorContollerTest {
 
         assertTrue(result == 0);
     }
+
+    @Test
+    @DisplayName("1+(1-2) = 0")
+    void t9(){
+        CalculatorContoller calculatorContoller = new CalculatorContoller();
+        int result = calculatorContoller.run("1+(1-2)");
+
+        assertTrue(result == 0);
+    }
+
+    @Test
+    @DisplayName("((5 + 1) * 8) - 40 = 8")
+    void t10(){
+        CalculatorContoller calculatorContoller = new CalculatorContoller();
+        int result = calculatorContoller.run("((5+1)*8)-40");
+
+        assertTrue(result == 8);
+    }
+
+    @Test
+    @DisplayName("((8+1)*(2+10)) = 108")
+    void t11(){
+        CalculatorContoller calculatorContoller = new CalculatorContoller();
+        int result = calculatorContoller.run("((8+1)*(2+10))");
+
+        assertTrue(result == 108);
+    }
 }

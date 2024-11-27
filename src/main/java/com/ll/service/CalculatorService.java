@@ -36,7 +36,6 @@ public class CalculatorService {
 
         // 결과값 숫자 리스트에 추가
         numList.add(result);
-
         //결과값 리턴
         return result;
     }
@@ -106,6 +105,7 @@ public class CalculatorService {
                 }
             }
         }
+
         // ------------ 곱하기 나누기 계산 종료 ----------------------
         return result;
     }
