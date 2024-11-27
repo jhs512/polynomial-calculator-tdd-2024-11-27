@@ -50,4 +50,13 @@ class AppTest {
         
         assertThat(rs).isEqualTo(30);
     }
+
+    // ((3 + 5) * 5 + -10) * 10 / 5 중 ((3 + 5) * 5 + -10) * 10  먼저 진행 
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10) * 10 / 5 : ((3 + 5) * 5 + -10) * 10 먼저 진행, 기대값은 300")
+    public void t5() {
+        int rs = Calc.run("((3 + 5) * 5 + -10) * 10 ");
+        
+        assertThat(rs).isEqualTo(300);
+    }
 }
