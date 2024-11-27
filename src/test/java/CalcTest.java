@@ -21,5 +21,18 @@ public class CalcTest {
         assertThat(rs).isEqualTo(2);
     }
 
+    @Test
+    @DisplayName("20 * 5")
+    public void t3() {
+        int rs = Calc.run("20 * 5");
+        assertThat(rs).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("20 - 5")
+    public void t4() {
+        int rs = Calc.run("20 - 5");
+        assertThat(rs).isEqualTo(15);
+    }
 
 }
