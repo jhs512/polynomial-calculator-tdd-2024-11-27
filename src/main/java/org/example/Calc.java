@@ -2,13 +2,10 @@ package org.example;
 
 public class Calc {
     public static int run(String expr) {
-        if (expr.equals("3 + 5")) {
-            return 8;
-        } else if (expr.equals("10 + 5")) {
-            return 15;
-        } else if (expr.equals("20 + 5")) {
-            return 25;
-        }
-        return 0;
+        String[] temp = expr.split(" \\+ ");
+        int num1 = Integer.parseInt(temp[0]);
+        int num2 = Integer.parseInt(temp[1]);
+
+        return num1 + num2;
     }
 }
