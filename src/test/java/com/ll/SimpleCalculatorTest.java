@@ -13,4 +13,11 @@ public class SimpleCalculatorTest {
         int rs = simple.plus(1,2);
         assertEquals(3,rs);
     }
+    @Test
+    @DisplayName("6 + 8 =14")
+    public void testPlus2(){
+        SimpleCaculator simple = new SimpleCaculator();
+        int rs = simple.plus(6,8);
+        assertEquals(14,rs);
+    }
 }
