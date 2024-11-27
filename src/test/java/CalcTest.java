@@ -8,4 +8,9 @@ public class CalcTest {
     public void threePlusFive_equalsEight() {
         assertEquals(8, Calc.run("3 + 5"));
     }
+
+    @Test
+    public void tenPlusFive_equalsFifteen() {
+        assertEquals(15, Calc.run("10 + 5"));
+    }
 }
