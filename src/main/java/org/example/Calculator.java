@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Arrays;
+
 public class Calculator {
 
     private static final Calculator calculator = new Calculator();
@@ -28,18 +30,32 @@ public class Calculator {
     }
 
     public int calculate(String expression) {
-        String[] split = expression.split("[+\\-*/]");
 
-        if (expression.contains("+")) {
-            return add(Integer.parseInt(split[0].trim()), Integer.parseInt(split[1].trim()));
-        } else if(expression.contains("-")) {
-            return subtract(Integer.parseInt(split[0].trim()), Integer.parseInt(split[1].trim()));
-        } else if(expression.contains("*")) {
-            return multiply(Integer.parseInt(split[0].trim()), Integer.parseInt(split[1].trim()));
-        } else if (expression.contains("/")) {
-            return divide(Integer.parseInt(split[0].trim()), Integer.parseInt(split[1].trim()));
+        if(expression.isEmpty()) {
+            throw new IllegalArgumentException("Empty expression");     // 입력값이 없을 때 예외 던짐
         }
-        return 0;
+
+        expression = expression.replaceAll("\\s+", "");     // 공백 제거
+        String[] split = expression.split("(?<=[-+*/])|(?=[-+*/])");    // 연산자 앞뒤로 자름
+
+        int num1 = Integer.parseInt(split[0]);
+        int num2 = Integer.parseInt(split[2]);
+        String operator = split[1];
+
+        // 연산 결과 리턴
+        switch (operator) {
+            case "+":
+                return add(num1, num2);
+            case "-":
+                return subtract(num1, num2);
+            case "*":
+                return multiply(num1, num2);
+            case "/":
+                return divide(num1, num2);
+            default:
+                throw new IllegalArgumentException("Unknown operator: " + operator);
+        }
+
     }
 
 }
