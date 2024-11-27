@@ -59,4 +59,12 @@ class AppTest {
         
         assertThat(rs).isEqualTo(300);
     }
+
+    @Test
+    @DisplayName("다항식 계산 로직 전부 구현 ")
+    public void t6() {
+        int rs = Calc.run("((3 + 5) * 5 + -10) * 10 / 5");
+        
+        assertThat(rs).isEqualTo(60);
+    }
 }
