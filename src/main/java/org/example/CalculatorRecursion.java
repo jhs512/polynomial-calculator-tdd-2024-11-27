@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Arrays;
+
 public class CalculatorRecursion {
     
     Calculator calculator = Calculator.getInstance();
@@ -19,20 +21,35 @@ public class CalculatorRecursion {
 
         if(split.length == 1) {
             return Integer.parseInt(split[0]);
+        } else if(split.length == 2 && split[0].equals("-")) {
+            return Integer.parseInt(split[1]) * -1;
         }
 
-        int left = Integer.parseInt(split[0]);
-        char op = split[1].charAt(0);
-        int right = Integer.parseInt(split[2]);
+        int left, right;
+        char op;
+        if (split[0].equals("-")) {
+            left = Integer.parseInt(split[1]) * -1;
+            op = split[2].charAt(0);
+            right = Integer.parseInt(split[3]);
+        } else {
+            left = Integer.parseInt(split[0]);
+            op = split[1].charAt(0);
+            right = Integer.parseInt(split[2]);
+        }
 
         int result = calculator.calculate(op, right, left);
 
         StringBuilder sb = new StringBuilder();
         sb.append(result);
-        for (int i = 3; i < split.length; i++) {
-            sb.append(split[i]);
+        if (split[0].equals("-")) {
+            for (int i = 4; i < split.length; i++) {
+                sb.append(split[i]);
+            }
+        } else {
+            for (int i = 3; i < split.length; i++) {
+                sb.append(split[i]);
+            }
         }
-
         return calculateRecursion(sb.toString());
     }
 
