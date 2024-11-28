@@ -26,13 +26,13 @@ public class Calc {
 		if (minusContains) {
 			String[] split = exp.split("-");
 
-			int[] num = new int[exp.length()];
+			int[] num = new int[split.length];
 
 			for(int i = 0; i < split.length; i++) {
 				num[i] = Integer.parseInt(split[i].trim());
 			}
 
-			return num[1] - num[2];
+			return num[0] - num[1];
 		}
 		return 0;
 	}
