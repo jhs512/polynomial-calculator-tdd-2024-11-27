@@ -8,9 +8,17 @@ public class Calc {
         Stack<Integer> numbers = new Stack<>();
         int num = 0;
         char sign = '+';
+        boolean flag = false;
 
         for(int i=0; i<expr.length(); i++){
             char c = expr.charAt(i);
+
+            if(c=='-'){
+                if(i==0 || !Character.isDigit(expr.charAt(i-1)) && expr.charAt(i-1) != ')'){
+                    flag = true;
+                    continue;
+                }
+            }
 
             if(Character.isDigit(c)){ // 여러 자리 숫자 처리
                 num = num * 10 + (c-'0');
@@ -28,6 +36,10 @@ public class Calc {
              */
 
             if (!Character.isDigit(c) || i == expr.length() - 1) {
+                if(flag) {
+                    num = -num;
+                    flag = false;
+                }
                 switch (sign) {
                     case '+' -> numbers.push(num);
                     case '-' -> numbers.push(-num);
