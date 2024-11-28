@@ -51,6 +51,7 @@ public class Calculator {
         Stack<Character> operator = new Stack<>();
 
         boolean isNegative = false;     // 음수 판별을 위한 플래그
+        boolean isNegative2 = false;    // 괄호 바로 앞에 음수 판별
         for(int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
 
@@ -74,9 +75,15 @@ public class Calculator {
                     number.push(calculate(operator.pop(), number.pop(), number.pop()));
                 }
                 operator.pop();
+                if(isNegative2) {
+                    number.push(number.pop() * -1);
+                    isNegative2 = false;
+                }
             } else if(isOperator(c)){
-                if(c == '-' && (i == 0 || isOperator(expression.charAt(i - 1)) || expression.charAt(i - 1) == '(')) {
+                if(c == '-' && expression.charAt (i + 1) != '(' && (i == 0 || isOperator(expression.charAt(i - 1)) || expression.charAt(i - 1) == '(')) {
                     isNegative = true;
+                } else if(c == '-' && expression.charAt(i + 1) == '(' && (i == 0 || isOperator(expression.charAt(i - 1)))) {
+                    isNegative2 = true;
                 } else {
                     while(!operator.isEmpty() && priority(operator.peek()) >= priority(c)) {
                         number.push(calculate(operator.pop(), number.pop(), number.pop()));
