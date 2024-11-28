@@ -113,4 +113,17 @@ class CalculatorRecursionTest {
         assertThat(result).isEqualTo(60);
     }
 
+    @Test
+    @DisplayName("10 - 20 + 30 == 20")
+    void t9() {
+        //given
+        String expression = "10 - 20 + 30";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(20);
+    }
+
 }
