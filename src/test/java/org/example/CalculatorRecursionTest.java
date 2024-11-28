@@ -178,4 +178,17 @@ class CalculatorRecursionTest {
         assertThat(result).isEqualTo(-100);
     }
 
+    @Test
+    @DisplayName("-10 * -10 == -100")
+    void t14() {
+        //given
+        String expression = "-10 * -10";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(100);
+    }
+
 }

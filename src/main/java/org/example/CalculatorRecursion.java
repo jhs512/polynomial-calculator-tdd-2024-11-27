@@ -1,7 +1,5 @@
 package org.example;
 
-import java.util.Arrays;
-
 public class CalculatorRecursion {
     
     Calculator calculator = Calculator.getInstance();
@@ -14,6 +12,10 @@ public class CalculatorRecursion {
         return instance;
     }
 
+    public int calculate(String expression) {
+        expression = expression.replaceAll("\\s+", "");
+        return calculateRecursion(expression);
+    }
 
     public int calculateRecursion(String expression) {
 
@@ -30,18 +32,26 @@ public class CalculatorRecursion {
         if (split[0].equals("-")) {
             left = Integer.parseInt(split[1]) * -1;
             op = split[2].charAt(0);
-            right = Integer.parseInt(split[3]);
+            if (split[3].equals("-")) {
+                right = Integer.parseInt(split[4]) * -1;
+            } else right = Integer.parseInt(split[3]);
         } else {
             left = Integer.parseInt(split[0]);
             op = split[1].charAt(0);
-            right = Integer.parseInt(split[2]);
+            if (split[2].equals("-")) {
+                right = Integer.parseInt(split[3]) * -1;
+            } else right = Integer.parseInt(split[2]);
         }
 
         int result = calculator.calculate(op, right, left);
 
         StringBuilder sb = new StringBuilder();
         sb.append(result);
-        if (split[0].equals("-")) {
+        if (split[0].equals("-") && split[3].equals("-")) {
+            for (int i = 5; i < split.length; i++) {
+                sb.append(split[i]);
+            }
+        } else if(split[0].equals("-") || split[2].equals("-")) {
             for (int i = 4; i < split.length; i++) {
                 sb.append(split[i]);
             }
@@ -51,11 +61,6 @@ public class CalculatorRecursion {
             }
         }
         return calculateRecursion(sb.toString());
-    }
-
-    public int calculate(String expression) {
-        expression = expression.replaceAll("\\s+", "");
-        return calculateRecursion(expression);
     }
 
 }
