@@ -15,12 +15,25 @@ public class CalculatorRecursion {
 
     public int calculateRecursion(String expression) {
 
-        String[] split = expression.split("(?<=[-+*/])|(?=[-+*/])");
-        if(split.length == 3) {
-            return calculator.calculate(split[1].charAt(0), Integer.parseInt(split[2]), Integer.parseInt(split[0]));
+        String[] split = expression.split("(?<=[-+*/])|(?=[-+*/])");    // 연산자 앞뒤로 자르기
+
+        if(split.length == 1) {
+            return Integer.parseInt(split[0]);
         }
 
-        return -1;
+        int left = Integer.parseInt(split[0]);
+        char op = split[1].charAt(0);
+        int right = Integer.parseInt(split[2]);
+
+        int result = calculator.calculate(op, right, left);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(result);
+        for (int i = 3; i < split.length; i++) {
+            sb.append(split[i]);
+        }
+
+        return calculateRecursion(sb.toString());
     }
 
     public int calculate(String expression) {
