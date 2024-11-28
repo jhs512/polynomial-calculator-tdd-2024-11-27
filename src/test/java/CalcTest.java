@@ -44,4 +44,11 @@ public class CalcTest {
         assertThat(Calc.run("3 - 1")).isEqualTo(2);
     }
 
+	@Test
+    @DisplayName("100 - 20 == 80")
+    void t7() {
+        assertThat(Calc.run("100 - 20")).isEqualTo(80);
+    }
+
+
 }
