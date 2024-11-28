@@ -77,6 +77,13 @@ public class Calc {
                 int[] num = {0};
                 i = findNumber(formula, i, num);
                 processHighPrecedenceOperations(numbers, operators, num[0]);
+            }else if(ch == '-' && formula.charAt(i + 1) == '('){
+                int matchIndex = findMatch(formula, i + 1);
+                String subFormula = formula.substring(i + 2, matchIndex);
+                int num = calculate(subFormula);
+                i = matchIndex;
+
+                processHighPrecedenceOperations(numbers, operators, -num);
             } else{
                 operators.push(ch);
             }
@@ -128,13 +135,13 @@ public class Calc {
      * @return 결과 값
      */
     private static int processRemainingAdditionSubtraction(Stack<Integer> numbers, Stack<Character> operators){
-        int result = numbers.pop();
+        int result = numbers.removeFirst();
         while(!operators.isEmpty()){
-            char op = operators.pop();
-            int nextNum = numbers.pop();
+            char op = operators.removeFirst();
+            int nextNum = numbers.removeFirst();
             result = switch (op) {
-                case '+' -> nextNum + result;
-                case '-' -> nextNum - result;
+                case '+' -> result + nextNum;
+                case '-' -> result - nextNum;
                 default -> result;
             };
         }
@@ -171,14 +178,14 @@ public class Calc {
      */
     private static final int FIND_FAIL = java.lang.Integer.MAX_VALUE;
     private static int findMatch(String formula, int curIndex){
-         int count = 0;
-         for(int i = curIndex; i < formula.length(); i++){
-             switch (formula.charAt(i)){
-                 case '(' -> count++;
-                 case ')' -> count--;
-             }
-             if(count == 0) return i;
-         }
-         return FIND_FAIL;
+        int count = 0;
+        for(int i = curIndex; i < formula.length(); i++){
+            switch (formula.charAt(i)){
+                case '(' -> count++;
+                case ')' -> count--;
+            }
+            if(count == 0) return i;
+        }
+        return FIND_FAIL;
     }
 }
