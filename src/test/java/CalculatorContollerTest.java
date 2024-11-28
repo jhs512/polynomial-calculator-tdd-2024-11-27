@@ -113,4 +113,13 @@ class CalculatorContollerTest {
 
         assertTrue(result == 108);
     }
+
+    @Test
+    @DisplayName("-(10 + 5) = -15")
+    void t13(){
+        CalculatorContoller calculatorContoller = new CalculatorContoller();
+        int result = calculatorContoller.run("-(10 + 5)");
+
+        assertTrue(result == -15);
+    }
 }
