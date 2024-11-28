@@ -16,6 +16,7 @@ public class App {
 
     public void run() {
         Calculator calculator = Calculator.getInstance();
+        CalculatorRecursion calculatorRecursion = CalculatorRecursion.getInstance();
         String cmd;
 
         while(true) {

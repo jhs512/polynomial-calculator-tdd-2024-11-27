@@ -1,10 +1,11 @@
+package org.example;
+
 import static org.assertj.core.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
-import org.example.App;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
