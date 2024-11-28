@@ -191,4 +191,30 @@ class CalculatorRecursionTest {
         assertThat(result).isEqualTo(100);
     }
 
+    @Test
+    @DisplayName("10 * 10 * 10 == -1000")
+    void t15() {
+        //given
+        String expression = "10 * 10 * 10";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(1000);
+    }
+
+    @Test
+    @DisplayName("10 + 5 * 2 == 20")
+    void t16() {
+        //given
+        String expression = "10 + 5 * 2";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(20);
+    }
+
 }
