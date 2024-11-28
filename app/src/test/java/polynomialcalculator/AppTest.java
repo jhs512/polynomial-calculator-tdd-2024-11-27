@@ -121,4 +121,20 @@ class AppTest {
         
         assertThat(rs).isEqualTo(60);
     }
+
+    @Test
+    @DisplayName("다항식 계산 번외 ver.재귀 ")
+    public void t13() {
+        int rs = CalcDfs.run("((80 - 5) / 5 + 100) * -55 / 5 ");
+        
+        assertThat(rs).isEqualTo(-1265);
+    }
+
+    @Test
+    @DisplayName("다항식 계산 번외 ver.재귀2 ")
+    public void t14() {
+        int rs = CalcDfs.run("(3 + 5) * (5 - 2)");
+        
+        assertThat(rs).isEqualTo(24);
+    }
 }

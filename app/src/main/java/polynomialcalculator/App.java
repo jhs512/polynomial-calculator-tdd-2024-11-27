@@ -6,6 +6,10 @@ package polynomialcalculator;
 public class App {
 
     public static void main(String[] args) {
-        CalcDfs.run("((3 + 5) * 5 + -10) * 10 / 5");
+        //  CalcDfs.run("((3 + 5) * 5 + -10) * 10 / 5");
+        //  CalcDfs.run("(3 + 5) * (5 - 2)");
+        //  CalcDfs.run("3 + 5 * 5 - 2");
+
+        CalcDfs.run("-2 + 10 * ((5 - 2) * 3 + 100 / 2)");
     }
 }

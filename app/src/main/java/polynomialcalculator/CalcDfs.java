@@ -3,78 +3,68 @@ package polynomialcalculator;
 import java.util.ArrayList;
 import java.util.List;
 
-import polynomialcalculator.Util.CalcUtil;
-
 public class CalcDfs {
-    public static int dfs(int ans,List<Integer>intVal,List<String>operVal,int idx,int operIdx) {
-        if(idx == intVal.size()) {
-            return ans;
-        } else {
-            if(ans == 0) {
-                // 초기 설정
-                ans = intVal.get(idx);
-                dfs(ans, intVal, operVal, ++idx, operIdx);
-            } else {
-                // 연산자가 + 일 때 
-                if ( operVal.get(operIdx).equals("+") ) {
-                    ans += intVal.get(idx);
-                    dfs(ans, intVal, operVal, ++idx, ++operIdx);
-                } 
-                // 연산자가 - 일 떄 
-                else if ( operVal.get(operIdx).equals("-")) {
-                    ans -= intVal.get(idx);
-                    dfs(ans, intVal, operVal, ++idx, ++operIdx);
-                } 
-                // 연산자가 * 일 때 
-                else if  ( operVal.get(operIdx).equals("*")) {
-                    ans *= intVal.get(idx);
-                    dfs(ans, intVal, operVal, ++idx, ++operIdx);
-                } 
-                // 연산자가 / 일 때 
-                else if  ( operVal.get(operIdx).equals("/")) {
-                    ans /= intVal.get(idx);
-                    dfs(ans, intVal, operVal, ++idx, ++operIdx);
-                } 
-            }
-            // 식에서 가지고 있는 연산자를 전부 이용했을 때.  
-            return dfs(ans, intVal, operVal, idx, operIdx); 
-        }
-    }
 
     public static int run(String cal) {
-        int ans = 0; // 리턴값 변수
+        while (cal.contains("(")) {
+            int open = cal.lastIndexOf("(");
+            int close = cal.indexOf(")", open);
+            String inner = cal.substring(open + 1, close);
+            int result = run(inner);
+            cal = cal.substring(0, open) + result + cal.substring(close + 1);         
+        }
 
-        // 식에서 소괄호 전부 재거 
-        //    >>  입력 식 : ((3 + 5) * 5 + -10) * 10 / 5
-        //    >>  기대 식 : 3 + 5 * 5 + -10 * 10 / 5
-        cal = CalcUtil.RemoveParen(cal);
+        //괄호 X ==> 우선순위에 따라 계산
+        return cal(cal);
+    }
 
-        //  " " 을기준으로 잘라서 임시 문자 배열 생성 
-        //  입력 문자열 : 3 + 5 * 5 + -10 * 10 / 5
-        //  기대 문자열 : {3, +, 5, *, 5, +, -10, *, 10, /, 5}
-        String[] sArr = cal.split(" ");
-
+    //  입력 식 : ((3 + 5) * 5 + -10) * 10 / 5
+    public static int cal(String cal) {
         //  숫자가 임시로 저장 될 리스트 
         List<Integer> intVal = new ArrayList<>();
 
         //  연산자가 임시로 저장 될 리스트
         List<String> operVal = new ArrayList<>();
 
+        //  " " 을기준으로 잘라서 임시 문자 배열 생성 
+        String[] sArr = cal.split(" ");
+
         for(String s : sArr) {
-            //  연산자인 경우 operVal 리스트에 값 입력 
-            //  리스트 기대 결과 : [+, *, +, *, /] 
-            if(s.equals("+") || s.equals("*") || s.equals("-") || s.equals("/")) {
+            if(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/")) {
                 operVal.add(s);
-            } 
-            //  숫자인 경우 intVal 리스트에 값 입력 
-            //  리스트 기대 결과 : [3, 5, 5, -10, 10, 5]
-            else {
+            } else {
                 intVal.add(Integer.parseInt(s));
             }
         }
 
-        //  재귀함수 호출(intVal의 리스트 길이만큼 반복 될 예정 )
-        ans = dfs(ans, intVal, operVal, 0, 0);
+        //  곱셈, 나눗셈 선처리
+        int i = 0;
+        while (i < operVal.size()) {            
+            if(operVal.get(i).equals("*") || operVal.get(i).equals("/")) {
+                int result = operVal.get(i).equals("*") ? 
+                    intVal.get(i) * intVal.get(i + 1) : 
+                    intVal.get(i) / intVal.get(i + 1);
+
+                intVal.set(i, result);
+                intVal.remove(i+1);
+                
+                //  처리 연산자 제거
+                operVal.remove(i);
+            } else {
+                i++;
+            }
+        }
+        
+        int ans = intVal.get(0); // 리턴값 변수
+        
+        //  덧셈 뺼셈 처리 
+        for(i = 0; i < operVal.size() ; i++) {
+            ans = operVal.get(i).equals("+") ? 
+                ans + intVal.get(i + 1) : 
+                ans - intVal.get(i + 1); 
+        }
+
+        System.out.println("최종 결과 : " + ans);
        
         return ans;
     }
