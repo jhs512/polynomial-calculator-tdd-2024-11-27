@@ -126,4 +126,56 @@ class CalculatorRecursionTest {
         assertThat(result).isEqualTo(20);
     }
 
+    @Test
+    @DisplayName("10 - 10 - 10 - 10 == -20")
+    void t10() {
+        //given
+        String expression = "10 - 10 - 10 - 10";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(-20);
+    }
+
+    @Test
+    @DisplayName("10 - 10 - 10 - 10 + 10 + 10 - 10 == -10")
+    void t11() {
+        //given
+        String expression = "10 - 10 - 10 - 10 + 10 + 10 - 10";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(-10);
+    }
+
+    @Test
+    @DisplayName("10 * 10 == 100")
+    void t12() {
+        //given
+        String expression = "10 * 10";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("10 * -10 == -100")
+    void t13() {
+        //given
+        String expression = "10 * -10";
+
+        //when
+        int result = calculatorRecursion.calculate(expression);
+
+        //then
+        assertThat(result).isEqualTo(-100);
+    }
+
 }
