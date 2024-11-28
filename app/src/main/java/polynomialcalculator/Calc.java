@@ -25,6 +25,7 @@ public class Calc {
     public static int run(String cal) {
         String oper = "";
         int ans = 0;
+        int left = 0;
 
         cal = cal.replace("(", "").replace(")", "");
 
@@ -37,8 +38,9 @@ public class Calc {
                  s.equals("/")) {
                 oper = s;
             } else {
+                left = Integer.parseInt(s);
                 if(ans == 0) {
-                    ans = Integer.parseInt(s);
+                    ans = left;
                 } else if (oper.equals("+")) {
                     ans = plus(ans, Integer.parseInt(s));
                 } else if (oper.equals("*")) {
@@ -50,6 +52,8 @@ public class Calc {
                 }
             }
         }
+
+        System.out.println(ans);
 
         return ans;
     }

@@ -67,4 +67,58 @@ class AppTest {
         
         assertThat(rs).isEqualTo(60);
     }
+
+    // 여기서 부터는 재귀DFS 방법 
+
+    @Test
+    @DisplayName("다항식 계산 시작 : 재귀 방식")
+    public void t7() {
+        int rs = CalcDfs.run("((3 + 5) * 5 + -10) * 10 / 5");
+        
+        assertThat(rs).isEqualTo(60);
+    }
+
+    // ((3 + 5) * 5 + -10) * 10 / 5 중 ((3 + 5)) 먼저 진행 
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10) * 10 / 5 : 3+5먼저 진행, 기대값은 8 ver.재귀")
+    public void t8() {
+        int rs = CalcDfs.run("((3 + 5))");
+        
+        assertThat(rs).isEqualTo(8);
+    }
+
+    // ((3 + 5) * 5 + -10) * 10 / 5 중 ((3 + 5)) 먼저 진행 
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10) * 10 / 5 : ((3 + 5) * 5)먼저 진행, 기대값은 40 ver.재귀")
+    public void t9() {
+        int rs = CalcDfs.run("((3 + 5) * 5)");
+        
+        assertThat(rs).isEqualTo(40);
+    }
+
+    // ((3 + 5) * 5 + -10) * 10 / 5 중 ((3 + 5) * 5 + -10) 먼저 진행 
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10) * 10 / 5 : ((3 + 5) * 5 + -10) 먼저 진행, 기대값은 30  ver.재귀")
+    public void t10() {
+        int rs = CalcDfs.run("((3 + 5) * 5 + -10)");
+        
+        assertThat(rs).isEqualTo(30);
+    }
+
+    // ((3 + 5) * 5 + -10) * 10 / 5 중 ((3 + 5) * 5 + -10) * 10  먼저 진행 
+    @Test
+    @DisplayName("((3 + 5) * 5 + -10) * 10 / 5 : ((3 + 5) * 5 + -10) * 10 먼저 진행, 기대값은 300  ver.재귀")
+    public void t11() {
+        int rs = CalcDfs.run("((3 + 5) * 5 + -10) * 10 ");
+        
+        assertThat(rs).isEqualTo(300);
+    }
+
+    @Test
+    @DisplayName("다항식 계산 로직 전부 구현 ver.재귀 ")
+    public void t12() {
+        int rs = CalcDfs.run("((3 + 5) * 5 + -10) * 10 / 5 ");
+        
+        assertThat(rs).isEqualTo(60);
+    }
 }
