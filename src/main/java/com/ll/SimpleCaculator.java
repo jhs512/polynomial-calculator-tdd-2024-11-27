@@ -1,9 +1,16 @@
 package com.ll;
 
 public class SimpleCaculator {
-    public int plus(int n1,int n2){
-        if((n1 == 6) && (n2==8)) return 14;
-        return 3;
-
+    public double plus(double n1,double n2){
+        return n1+n2;
+    }
+    public double sub(double n1, double n2){
+        return n1-n2;
+    }
+    public double mul(double n1, double n2){
+        return n1*n2;
+    }
+    public double divide(double n1, double n2){
+        return n1/n2;
     }
 }
