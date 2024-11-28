@@ -1,6 +1,6 @@
 package com.ll;
 
-public class SimpleCaculator {
+public class CalculatorService {
     public double plus(double n1,double n2){
         return n1+n2;
     }
