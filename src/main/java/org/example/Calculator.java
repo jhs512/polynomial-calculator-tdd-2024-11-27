@@ -55,13 +55,14 @@ public class Calculator {
         for(int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
 
+            // 숫자 판별
             if(Character.isDigit(c)) {
                 StringBuilder temp = new StringBuilder();
                 if(isNegative) {
                     temp.append("-");
                     isNegative = false;
                 }
-
+                // 숫자가 두자리 이상일 경우를 위해 반복문으로 연속된 숫자 처리
                 while(i < expression.length() && Character.isDigit(expression.charAt(i))) {
                     temp.append(expression.charAt(i));
                     i++;
@@ -71,20 +72,28 @@ public class Calculator {
             } else if(c == '(') {
                 operator.push(c);
             } else if (c == ')') {
+                // 괄호 안에 연산을 모두 처리하기 위해 '('를 만날 때 까지 반복문 돌림 ex) (1 + 5 * 10)
                 while(operator.peek() != '(') {
                     number.push(calculate(operator.pop(), number.pop(), number.pop()));
                 }
                 operator.pop();
+
+                // 괄호 바로 앞에 - 연산자가 붙을 경우 괄호 안에 연산이 끝나고 음수로 바꿔서 다시 Stack에 push
                 if(isNegative2) {
                     number.push(number.pop() * -1);
                     isNegative2 = false;
                 }
             } else if(isOperator(c)){
+                // 괄호가 안 붙은 음수 판별 조건
                 if(c == '-' && expression.charAt (i + 1) != '(' && (i == 0 || isOperator(expression.charAt(i - 1)) || expression.charAt(i - 1) == '(')) {
                     isNegative = true;
-                } else if(c == '-' && expression.charAt(i + 1) == '(' && (i == 0 || isOperator(expression.charAt(i - 1)))) {
+                }
+                // 괄호가 붙은 음수 판별
+                else if(c == '-' && expression.charAt(i + 1) == '(' && (i == 0 || isOperator(expression.charAt(i - 1)))) {
                     isNegative2 = true;
-                } else {
+                }
+                // 해당 안될 겅우 연산자 우선순위에 따라 연산 진행
+                else {
                     while(!operator.isEmpty() && priority(operator.peek()) >= priority(c)) {
                         number.push(calculate(operator.pop(), number.pop(), number.pop()));
                     }
@@ -94,6 +103,7 @@ public class Calculator {
             }
         }
 
+        // 남아 있는 연산 처리
         while(!operator.isEmpty()) {
             number.push(calculate(operator.pop(), number.pop(), number.pop()));
         }
