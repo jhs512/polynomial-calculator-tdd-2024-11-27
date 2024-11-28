@@ -1,5 +1,6 @@
 package com.calc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ public class Calc {
 
 	private static int calc(String exp) {
 		boolean plusContains = exp.contains("+");
+		boolean minusContains = exp.contains("-");
 
 		if (plusContains) {
 			String[] split = exp.split("\\+");
@@ -21,6 +23,17 @@ public class Calc {
 			return Arrays.stream(split).mapToInt(s -> Integer.parseInt(s.trim())).sum();
 		}
 
+		if (minusContains) {
+			String[] split = exp.split("-");
+
+			int[] num = new int[exp.length()];
+
+			for(int i = 0; i < split.length; i++) {
+				num[i] = Integer.parseInt(split[i].trim());
+			}
+
+			return num[1] - num[2];
+		}
 		return 0;
 	}
 }
