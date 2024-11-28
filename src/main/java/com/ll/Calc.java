@@ -7,19 +7,19 @@ public class Calc {
     static double run(String str){
         if(str.contains("+")){
             String[] a = str.split("\\+");
-            return Arrays.stream(a).map(String::trim).mapToInt(Integer::parseInt).sum();
+            return Arrays.stream(a).map(String::trim).mapToDouble(Double::parseDouble).reduce(CalculatorService::plus).orElse(0);
         }
         if(str.contains("-")){
             String[] a = str.split("\\-");
-            return Arrays.stream(a).map(String::trim).mapToInt(Integer::parseInt).reduce((n1,n2) -> (n1-n2)).orElse(0);
+            return Arrays.stream(a).map(String::trim).mapToDouble(Double::parseDouble).reduce(CalculatorService::sub).orElse(0);
         }
         if(str.contains("*")){
             String[] a = str.split("\\*");
-            return Arrays.stream(a).map(String::trim).mapToInt(Integer::parseInt).reduce((n1,n2) -> (n1*n2)).orElse(0);
+            return Arrays.stream(a).map(String::trim).mapToDouble(Double::parseDouble).reduce(CalculatorService::mul).orElse(0);
         }
         if(str.contains("/")){
             String[] a = str.split("\\/");
-            return Arrays.stream(a).map(String::trim).mapToInt(Integer::parseInt).reduce((n1,n2) -> (n1/n2)).orElse(0);
+            return Arrays.stream(a).map(String::trim).mapToDouble(Double::parseDouble).reduce(CalculatorService::divide).orElse(0);
         }
         List<String> arr = Arrays.stream(str.split(" ")).toList();
         return 0;
