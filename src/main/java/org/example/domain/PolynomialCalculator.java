@@ -1,64 +1,30 @@
 package org.example.domain;
 
+import org.example.parser.MathExpressionParser;
+import org.example.validator.ExpressionValidateUtil;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PolynomialCalculator {
+    private final MathExpressionParser parser = new MathExpressionParser();
+
     public int run(String mathExpression){
-        checkValidity(mathExpression);
+        ExpressionValidateUtil.checkValidity(mathExpression);
         mathExpression = mathExpression.replaceAll("\\s", "");
 
-        return simpleCalc(mathExpression);
+        return calc(mathExpression);
     }
 
-    private int simpleCalc(String mathExpression){
-        String firstInnerExpression = findFirstInnerExpression(mathExpression);
+    private int calc(String mathExpression){
+        String firstInnerExpression = parser.findFirstInnerExpression(mathExpression);
         if(firstInnerExpression.equals(mathExpression)){
             return calcWithOutParentheses(mathExpression);
         }
         else {
-            String c = mathExpression.replace(firstInnerExpression, String.valueOf(calcWithOutParentheses(firstInnerExpression)));
-            return simpleCalc(c);
+            String firstCalculatedExpression = mathExpression.replace(firstInnerExpression, String.valueOf(calcWithOutParentheses(firstInnerExpression)));
+            return calc(firstCalculatedExpression);
         }
-    }
-
-    private void checkValidity(String mathExpression){
-        long open = mathExpression.chars()
-                .filter(c -> c == '(')
-                .count();
-
-        long close = mathExpression.chars()
-                .filter(c -> c == ')')
-                .count();
-        if (open != close){
-            throw new IllegalStateException();
-        }
-    }
-
-
-    /*
-        맨 처음 나오는 최초 괄호 식 추출.
-     */
-    private String findFirstInnerExpression(String mathExpression){
-        char[] cArray = mathExpression.toCharArray();
-        int open = -1;
-        for(int i = 0; i < cArray.length; i++){
-            if(cArray[i] == '('){
-                open = i;
-            }else if(cArray[i] == ')'){
-                if(open == -1){
-                    throw new IllegalStateException();
-                }else {
-                    return mathExpression.substring(open, i + 1);
-                }
-            }
-        }
-        if(open != -1){
-            throw new IllegalStateException();
-        }
-        return mathExpression;
     }
 
     /*
@@ -66,16 +32,25 @@ public class PolynomialCalculator {
      */
     private int calcWithOutParentheses(String mathExpression){
         mathExpression = mathExpression.replaceAll("\\(", "").replaceAll("\\)", "");
+        StringBuilder stringBuilder = new StringBuilder();
 
-        List<MathOperator> mathOperatorList = Arrays.stream(mathExpression.split("\\d"))
-                .filter(s -> !s.isBlank())
-                .map(MathOperator::fromIcon)
-                .collect(Collectors.toCollection(ArrayList::new));
+        List<MathOperator> mathOperatorList = new ArrayList<>();
+        List<Integer> numbers = new ArrayList<>();
 
-        List<Integer> numbers = Arrays.stream(mathExpression.split("\\D"))
-                .filter(s -> !s.isBlank())
-                .map(Integer::valueOf)
-                .collect(Collectors.toCollection(ArrayList::new));
+        char[] chars = mathExpression.toCharArray();
+        for(int i = 0; i < chars.length; i++){
+            if(Character.isDigit(chars[i])){
+                stringBuilder.append(Character.getNumericValue(chars[i]));
+            }else if(chars[i] == '-' && (i == 0 || !Character.isDigit(chars[i -1]))){
+                stringBuilder.append(chars[i]);
+            }else {
+                numbers.add(Integer.parseInt(stringBuilder.toString()));
+                stringBuilder.setLength(0);
+                mathOperatorList.add(MathOperator.fromIcon(String.valueOf(chars[i])));
+            }
+        }
+
+        numbers.add(Integer.parseInt(stringBuilder.toString()));
 
         int result = numbers.getFirst();
 
