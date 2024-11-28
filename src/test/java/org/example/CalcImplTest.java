@@ -16,10 +16,12 @@ class CalcImplTest {
     @Test
     void split() {
         calc.run("(2 + 5 * (3 + 5) * 5 + -10) * 10 / 5");
-        System.out.println(calc.splitPolynomial());
-        for(String s : calc.splitPolynomial()) {
-            for(String ss : s.split(" ")) System.out.println("ss = " + ss);
-        }
+        ArrayList<String> sp = calc.splitPolynomial();
+
+        assertEquals("2 + 5 * ", sp.get(0));
+        assertEquals("3 + 5", sp.get(1));
+        assertEquals(" * 5 + -10", sp.get(2));
+        assertEquals(" * 10 / 5", sp.get(3));
     }
 
     @Test
@@ -30,8 +32,6 @@ class CalcImplTest {
 
         for(int i = 0; i< testArr.length; i++) {
             assertEquals(testArr[i], priorityArr.get(i));
-            System.out.println("testArr = " + testArr[i]);
-            System.out.println("priorutyArr = " + priorityArr.get(i));
         }
     }
 
