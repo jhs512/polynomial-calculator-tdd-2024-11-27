@@ -1,7 +1,14 @@
 package com.ll;
 
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
 import java.io.*;
 import java.util.Scanner;
+
+import static org.mockito.Mockito.*;
 
 public class TestUtil {
     public static Scanner genScanner(final String input) {
@@ -25,11 +32,7 @@ public class TestUtil {
             throw new RuntimeException(e);
         }
     }
-    public static double run(String str){
-        CalculatorSplit calculatorSplit = new CalculatorSplit();
-        CalculatorService calculatorService = new CalculatorService();
-        CalculatorScanner calculatorScanner = new CalculatorScanner(calculatorService,calculatorSplit,genScanner(str));
-        return calculatorScanner.run();
-    }
+
+
 
 }

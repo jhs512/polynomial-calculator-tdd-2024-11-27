@@ -21,5 +21,8 @@ public class CalculatorScanner {
     double run(){
         return 0;
     }
+    double run(String str){
+        return 0;
+    }
 
 }
