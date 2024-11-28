@@ -75,7 +75,8 @@ public class AppTest {
 //        "5+3: [{attribute=value, value=5}, {attribute=operator, priority=1, value=+}, {attribute=value, value=3}]",
 //        "5+3-2:[{attribute=value, value=5}, {attribute=operator, priority=1, value=+}, {attribute=value, value=3}, {attribute=operator, priority=1, value=-}, {attribute=value, value=2}]",
 //        "5+3+-2:[{attribute=value, value=5}, {attribute=operator, priority=1, value=+}, {attribute=value, value=3}, {attribute=operator, priority=1, value=+}, {attribute=value, value=-2}]",
-        "5*(3+1):dasd"
+//        "(5*(3+1)):[{depth=1, attribute=open, value=(}, {attribute=value, value=5}, {attribute=operator, priority=0, value=*}, {depth=2, attribute=open, value=(}, {attribute=value, value=3}, {attribute=operator, priority=1, value=+}, {attribute=value, value=1}, {depth=2, attribute=close, value=)}, {depth=1, attribute=close, value=)}]",
+        "(((5+3))):asd"
     }, delimiter=':')
     public void parseTest(String s, String i) {
         Tokenizer tokenizer = new Tokenizer(s);
@@ -86,11 +87,40 @@ public class AppTest {
     @DisplayName("기능 테스트")
     @ParameterizedTest
     @CsvSource({
-        "((5+3)*-4), 4"
+//        "1 + 1, 2",
+//        "2 + 1, 3",
+//        "2 + 2, 4",
+//        "1000 + 280, 1280",
+//        "2 - 1, 1",
+//        "3 - 1, 2",
+//        "100 - 20, 80",
+//        "10 + 20 + 30, 60",
+//        "10 - 20 + 30, 20",
+//        "10 - 10 - 10 - 10,-20",
+//        "10 - 10 - 10 - 10 + 10 + 10 - 10,-10",
+//        "10 * 10, 100",
+//        "10 * -10,-100",
+//        "10 * 10 * 10, 1000",
+        "10 + 5 * 2, 20",
+        "20 + 10 + 5 * 2, 40",
+        "10 * 20 + 10 + 5 * 2, 220",
+        "(10 + 20), 30",
+        "((10 + 20)), 30",
+        "(((10 + 20))), 30",
+        "(20 + 20) + 20, 60",
+        "((20 + 20)) + 20, 60",
+        "(10 + 20) * 3, 90",
+        "10 + (10 + 5), 25",
+        "-(10 + 5), -15",
+        "-(8 + 2) * -(7 + 3) + 5, 105",
+        "5 - (1 + 5), -1",
+        "3 * 1 + (1 - (4 * 1 - (1 - 1))), 0"
     })
-    public void appTest(String s, int i) {
-        int result = ExpressionCalculator.calculate(s);
-        assertThat(result).isEqualTo(i);
+    public void appTest(String s, String i) {
+        Tokenizer tokenizer = new Tokenizer(s);
+        List<Map<String, String>> tokens = tokenizer.tokenize();
+        String result = Executor.execute(tokens);
+        assertThat(result).contains(i.trim());
     }
 }
 
