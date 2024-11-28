@@ -29,6 +29,7 @@ public class Calculator {
     private List<String> preProcessing(String str) {
         str = str.replaceAll("\\(", "\\( ");
         str = str.replaceAll("\\)", " \\)");
+
         for(String element : str.split(" ")){
             list.add(element);
         }
@@ -42,7 +43,19 @@ public class Calculator {
         }
         // 괄호 속 계산
         Map<String, Integer> map = findParentheses();
-        calculate(map.get("start")+1,map.get("end")-1);
+
+        // 괄호 바로 앞에 마이너스 붙어있을경우
+        // 그에 대한 음수처리가 필요함
+        if(map.get("isMinus") == 1){
+            calculate(map.get("start")+1,map.get("end")-1);
+            int num = Integer.parseInt(list.get(map.get("start")+1));
+            num = -num;
+            list.remove(map.get("start")+1);
+            list.add(map.get("start")+1,Integer.toString(num));
+        }
+        else{
+            calculate(map.get("start")+1,map.get("end")-1);
+        }
 
         // 그리고 괄호를 제거함
         list.remove(map.get("start").intValue());
@@ -56,14 +69,20 @@ public class Calculator {
         Map<String, Integer> map = new HashMap<>();
         int start=0;
         int end=0;
+        int isMinus = 0;
         for(int i=0; i<=endIdx; i++){
             if(list.get(i).equals("(")){
                 start = i;
+            }
+            else if(list.get(i).equals("-(")){
+                start = i;
+                isMinus = 1;
             }
             else if(list.get(i).equals(")")){
                 end = i;
                 map.put("start", start);
                 map.put("end",end);
+                map.put("isMinus",isMinus);
                 break;
             }
         }
