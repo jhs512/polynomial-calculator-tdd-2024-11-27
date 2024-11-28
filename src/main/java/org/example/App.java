@@ -128,14 +128,49 @@ class Tokenizer {
             //우선순위 낮은 연산자 & 부호가 될 수 있는 연산자
             if ("\\+\\-".contains(arg)) {
                 retreat();
-                if ("\\*\\/\\-\\+".contains(get())) {
-                    advance();
 
+                //부호일 때와 연산자일 때 구분
+                if ("\\*\\/\\-\\+".contains(get())) {
+                    //부호일 때
+                    advance();
                     StringBuilder valueBuilder = new StringBuilder();
-                    if (("-".contains(get()))) {
+
+                    //괄호 앞에 -올 때 -> -1 * 로 치환 (앞에 아무런 것도 없을 때)
+                    if ("(".contains(get())) {
+                        valueBuilder.append("-1");
+                        token.put("value", valueBuilder.toString());
+                        token.put("attribute", "value");
+                        tokens.add(token);
+
+                        //새 토큰으로 * 연산자 삽입
+                        Map<String, String> t = new HashMap<>();
+                        t.put("value", "*");
+                        t.put("attribute", "operator");
+                        t.put("priority", "0");
+                        tokens.add(t);
+                        continue;
+                    }
+
+                    if ("-".contains(get())) {
                         valueBuilder.append("-");
                         advance();
                     } else advance();
+
+                    //괄호 앞에 -올 때 -> -1 * 로 치환 (앞에 요소가 있을 때)
+                    if ("(".contains(get())) {
+                        valueBuilder.append("1");
+                        token.put("value", valueBuilder.toString());
+                        token.put("attribute", "value");
+                        tokens.add(token);
+
+                        //새 토큰으로 * 연산자 삽입
+                        Map<String, String> t = new HashMap<>();
+                        t.put("value", "*");
+                        t.put("attribute", "operator");
+                        t.put("priority", "0");
+                        tokens.add(t);
+                        continue;
+                    }
 
                     while ("0123456789".contains(get())) {
                         valueBuilder.append(get());
@@ -157,13 +192,15 @@ class Tokenizer {
                         }
                         break;
                     }
-                }
 
-                advance();
-                token.put("value", arg);
-                token.put("attribute", "operator");
-                token.put("priority", "1");
-                advance();
+                } else {
+                    //연산자일떄
+                    advance();
+                    token.put("value", arg);
+                    token.put("attribute", "operator");
+                    token.put("priority", "1");
+                    advance();
+                }
             }
 
             if ("(".contains(arg)) {
@@ -238,6 +275,7 @@ class Executor {
                 int depth = Integer.parseInt(item.get("depth"));
                 if (depth == currentDepth) {
                     endIndex = i;
+                    break;
                 }
             }
         }
@@ -250,87 +288,60 @@ class Executor {
 
     static public String calculate(int startIndex, int endIndex, List<Map<String, String>> tokens) {
 
-        Stack<String> operatorStack = new Stack<>();
-        Stack<String> valueStack = new Stack<>();
+        Stack<Map<String, String>> operatorStack = new Stack<>();
+        Stack<Integer> valueStack = new Stack<>();
+        List<Map<String, String>> postfix = new ArrayList<>();
 
-
-        //우선순위 낮은연산자 탐색 -> 스택에 집어넣음 (나중에 계산)
-        //후위 표기법으로 계산
+        //후위 표기법으로 변환
         //LIFO 구조이기 때문에 인덱스의 역순으로 계산
-        for (int i = endIndex; i >= startIndex; i--) {
+        for (int i = startIndex; i <= endIndex; i++) {
             Map<String, String> item = tokens.get(i);
             if (Objects.equals(item.get("attribute"), "operator")) {
-                String operator = item.get("value");
-                String value1 = tokens.get(i-1).get("value");
-                String value2 = tokens.get(i+1).get("value");
-
-                int priority = Integer.parseInt(item.get("priority"));
-
-                if (priority == 1) {
-                    if (valueStack.isEmpty()) {
-                        valueStack.push(value2);
-                    }
-                    valueStack.push(value1);
-                    operatorStack.push(operator);
+                if (operatorStack.isEmpty()) {
+                    operatorStack.push(item);
+                    continue;
+                };
+                int postPriority = Integer.parseInt(operatorStack.peek().get("priority"));
+                int currentPriority = Integer.parseInt(item.get("priority"));
+                if (currentPriority < postPriority) operatorStack.push(item);
+                if (currentPriority >= postPriority) {
+                    postfix.add(operatorStack.pop());
+                    operatorStack.push(item);
                 }
+            }
+
+            if (Objects.equals(item.get("attribute"), "value")) {
+                postfix.add(item);
             }
         }
 
-        //우선순위 높은 연산자 탐색
-        for (int i = endIndex; i >= startIndex; i--) {
-            Map<String, String> item = tokens.get(i);
-            if (Objects.equals(item.get("attribute"), "operator")) {
-                String operator = item.get("value");
-                String value1 = tokens.get(i-1).get("value");
-                String value2 = tokens.get(i+1).get("value");
-
-                int priority = Integer.parseInt(item.get("priority"));
-
-                if (priority == 0) {
-                    if (valueStack.isEmpty()) {
-                        valueStack.push(value2);
-                    }
-                    valueStack.push(value1);
-                    operatorStack.push(operator);
-                }
-            }
+        //남은 연산자 모두 리스트에 집어넣기
+        while (!operatorStack.isEmpty()) {
+            postfix.add(operatorStack.pop());
         }
 
         int result = 0;
 
         //후위 표기법 연산
-        while (!operatorStack.isEmpty()) {
-            StringBuilder expression = new StringBuilder();
-            String value1 = valueStack.pop();
-            String value2 = valueStack.pop();
+        postfix.forEach(
+            (item)->{
+                if (Objects.equals(item.get("attribute"), "value")) {
+                    valueStack.push(Integer.parseInt(item.get("value")));
+                }
 
-            if (value1.contains("-")) value1 = value1.replace("-", "m");
-            if (value2.contains("-")) value2 = value2.replace("-", "m");
+                if (Objects.equals(item.get("attribute"), "operator")) {
+                    int value1 = valueStack.pop();
+                    int value2 = valueStack.pop();
 
-            String operator = (operatorStack.pop());
-            expression.append(value1);
-            expression.append(operator);
-            expression.append(value2);
+                    if (Objects.equals(item.get("value"), "+")) valueStack.push(value2+value1);
+                    if (Objects.equals(item.get("value"), "-")) valueStack.push(value2-value1);
+                    if (Objects.equals(item.get("value"), "*")) valueStack.push(value2*value1);
+                    if (Objects.equals(item.get("value"), "/")) valueStack.push(value2/value1);
+                }
+            }
+        );
 
-            if (operator.contains("*")) {
-                result = App.multiply(expression.toString());
-                valueStack.push(String.valueOf(result));
-            }
-            if (operator.contains("/")) {
-                result = App.divide(expression.toString());
-                valueStack.push(String.valueOf(result));
-            }
-            if (operator.contains("+")) {
-                result = App.add(expression.toString());
-                valueStack.push(String.valueOf(result));
-            }
-            if (operator.contains("-")) {
-                result = App.minus(expression.toString());
-                valueStack.push(String.valueOf(result));
-            }
-        }
-
-        return valueStack.pop();
+        return String.valueOf(valueStack.pop());
     }
 
     static public List<Map<String, String>> save(int startIndex, int endIndex, String value, List<Map<String, String>> tokens) {
