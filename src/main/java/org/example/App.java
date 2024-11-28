@@ -2,6 +2,10 @@ package org.example;
 
 import java.util.*;
 
+/**
+ * @deprecated
+ * App 클래스의 문자 계산 메서드가 아닌 Executor가 내부적으로 계산을 처리합니다
+ */
 
 public class App {
 
@@ -42,6 +46,18 @@ public class App {
 
 }
 
+/**
+ * @author jung-yongjun
+ * @apiNote
+문자열 식을 입력받은 후 구분 분석하여 토큰으로 변환합니다
+ Map<String, String> token
+ token에는 다음과 같은 키들이 있습니다
+
+ value:String 토큰의 실제 값입니다
+ attribute:value, operator, open, close 토큰의 속성입니다. 각 피연산자, 연산자 괄호 열기, 괄호 닫기 입니다
+ depth:Int : 괄호의 깊이입니다 0부터 시작하여 괄호가 추가될 때마다 1씩 늘어납니다
+ priority:Int : 연산자의 우선순위입니다 *, / 는 0, +, - 는 1 입니다
+ */
 class Tokenizer {
 
     private final String expression;
@@ -55,6 +71,7 @@ class Tokenizer {
         this.parsed = this.expression.toCharArray();
     }
 
+    //인덱스 전진
     private boolean advance() {
         if (index == parsed.length-1) throw new RuntimeException("EOF");
         index+=1;
@@ -66,6 +83,7 @@ class Tokenizer {
         return true;
     }
 
+    //인덱스 후진
     private void retreat() {
         if (index == 0) return;
         index-=1;
@@ -82,7 +100,6 @@ class Tokenizer {
 
     public List<Map<String, String>> tokenize() {
 
-        outerloop:
         while (true) {
             String arg = get();
             Map<String, String> token = new HashMap<>();
@@ -98,7 +115,7 @@ class Tokenizer {
                 token.put("value", valueBuilder.toString());
                 token.put("attribute", "value");
 
-
+                //끝단이면 현재 토큰, 괄호로 감싸져있다면 괄호 반환
                 if (!hasNext()) {
                     tokens.add(token);
                     if (")".contains(get())) {
@@ -172,6 +189,7 @@ class Tokenizer {
                         continue;
                     }
 
+                    //숫자가 있을 때 계속 인덱스 전진
                     while ("0123456789".contains(get())) {
                         valueBuilder.append(get());
                         if (!hasNext()) break;
@@ -180,6 +198,7 @@ class Tokenizer {
                     token.put("value", valueBuilder.toString());
                     token.put("attribute", "value");
 
+                    //끝일 때 토큰을 추가하고, 괄호로 감싸져있다면 괄호 토큰 추가
                     if (!hasNext()) {
                         tokens.add(token);
                         if (")".contains(get())) {
@@ -194,7 +213,7 @@ class Tokenizer {
                     }
 
                 } else {
-                    //연산자일떄
+                    // 부호가 아닌 연산자일떄
                     advance();
                     token.put("value", arg);
                     token.put("attribute", "operator");
@@ -228,9 +247,20 @@ class Tokenizer {
     }
 }
 
+/**
+ * @author jung-yongjun
+ * @apiNote
+실행자입니다. 모든 메서드 및 변수는 static이며 모든 입력 값은 토큰화된 구문을 입력으로 받습니다
+ (문자열 식x)
+ */
 class Executor {
     static int finalResult = 0;
 
+    /**
+     * @param tokens
+     * @apiNote
+     * 토큰의 유효성을 검사합니다
+     */
     static public void checkIsValid(List<Map<String, String>> tokens) {
         //괄호 개수 체크
         List<Map<String, String>> opens = tokens.stream().filter(
@@ -254,6 +284,12 @@ class Executor {
 
         if (operators.size() != values.size()-1) throw new RuntimeException("연산자와 값의 개수가 맞지 않습니다");
     }
+
+    /**
+     * @param tokens
+     * @apiNote
+     * 시작과 끝 인덱스를 탐색합니다. 괄호가 있다면 괄호가 시작, 끝점이 되며 없다면 0부터 토큰의 길이까지입니다
+     */
 
     static public List<Integer> look(List<Map<String, String>> tokens) {
         int startIndex = 0;
@@ -286,6 +322,11 @@ class Executor {
 
     }
 
+    /**
+     * @param tokens, startIndex, endIndex
+     * @apiNote
+     * 시작과 끝 인덱스를 기준으로 계산합니다. 후위 표현삭으로 변환한 후 계산합니다
+     */
     static public String calculate(int startIndex, int endIndex, List<Map<String, String>> tokens) {
 
         Stack<Map<String, String>> operatorStack = new Stack<>();
@@ -320,8 +361,6 @@ class Executor {
             postfix.add(operatorStack.pop());
         }
 
-        int result = 0;
-
         //후위 표기법 연산
         postfix.forEach(
             (item)->{
@@ -344,6 +383,11 @@ class Executor {
         return String.valueOf(valueStack.pop());
     }
 
+    /**
+     * @apiNote
+     * 괄호의 계산을 끝낸 후 리스트를 재생성합니다
+     * 괄호의 시작과 끝을 제거하고 괄호의 연산 결과로 대체합니다
+     */
     static public List<Map<String, String>> save(int startIndex, int endIndex, String value, List<Map<String, String>> tokens) {
 
         // 새로운 리스트 생성
@@ -368,6 +412,10 @@ class Executor {
         return newList;
     }
 
+    /**
+     * @apiNote
+     * 재귀적으로 괄호가 사라질 때까지 실행합니다. 토큰의 길이가 1일 때 (결과값만 남을 때) 재귀를 빠져나옵니다
+     */
     static public String execute(List<Map<String,String>> tokens) {
         checkIsValid(tokens);
         List<Integer> indexes = look(tokens);

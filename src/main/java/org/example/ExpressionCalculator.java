@@ -2,6 +2,9 @@ package org.example;
 
 import java.util.Stack;
 
+/**
+*@deprecated
+ */
 public class ExpressionCalculator {
     public static int calculate(String expression) {
         Stack<Integer> numbers = new Stack<>();
