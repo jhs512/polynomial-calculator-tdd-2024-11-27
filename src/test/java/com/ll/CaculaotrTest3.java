@@ -24,6 +24,18 @@ public class CaculaotrTest3 {
     }
 
     @Test
+    @DisplayName("2 / 2 == 1")
+    void t3_1() {
+        assertThat(Calc.run("2 / 2")).isEqualTo(1);
+    }
+    @Test
+    @DisplayName("8 / 2 / 2 == 2")
+    void t3_2() {
+        assertThat(Calc.run("8 / 2 / 2")).isEqualTo(2);
+    }
+
+
+    @Test
     @DisplayName("1000 + 280 == 1280")
     void t4() {
         assertThat(Calc.run("1000 + 280")).isEqualTo(1280);
