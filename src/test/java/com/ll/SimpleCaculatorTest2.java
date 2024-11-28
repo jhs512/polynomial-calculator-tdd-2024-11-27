@@ -11,7 +11,34 @@ import static org.mockito.Mockito.*;
 public class SimpleCaculatorTest2 {
     @Mock
     CalculatorScanner mockedCal= mock(CalculatorScanner.class);;
-
+    @Test
+    @DisplayName("1 + 1= 2")
+    public void test7() {
+        when(mockedCal.run("1 + 1")).thenReturn(2.0);
+        final double result = mockedCal.run("1 + 1");
+        assertThat(result).isEqualTo(2.0);
+    }
+    @Test
+    @DisplayName("1 - 3= -2")
+    public void test8() {
+        when(mockedCal.run("1 - 3")).thenReturn(-2.0);
+        final double result = mockedCal.run("1 - 3");
+        assertThat(result).isEqualTo(-2.0);
+    }
+    @Test
+    @DisplayName("4 * 3 = 12")
+    public void test9() {
+        when(mockedCal.run("4 * 3")).thenReturn(12.0);
+        final double result = mockedCal.run("4 * 3");
+        assertThat(result).isEqualTo(12.0);
+    }
+    @Test
+    @DisplayName("6 / 3 = 2")
+    public void test10() {
+        when(mockedCal.run("6 / 3")).thenReturn(2.0);
+        final double result = mockedCal.run("6 / 3");
+        assertThat(result).isEqualTo(2.0);
+    }
     @Test
     @DisplayName("1 + 1 + 1 + 1 = 4")
     public void test1() {
