@@ -2,11 +2,10 @@ package calculator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
-public class Calculator {
+public class Calc {
 
-    public static int calculate(String expression) {
+    public static int run(String expression) {
         //"(5 * (3 + 5) * 5 + -10) * 10 / 5"
 
         return Integer.parseInt(dfs(expression, new int[]{0}));
