@@ -135,4 +135,11 @@ public class CalcTest {
 		assertThat(Calc.run("(20 + 20) + 20")).isEqualTo(60);
 	}
 
+	@Test
+    @DisplayName("((20 + 20)) + 20 == 60")
+    void t22() {
+        assertThat(Calc.run("((20 + 20)) + 20")).isEqualTo(60);
+    }
+
+
 }
