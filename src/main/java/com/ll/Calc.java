@@ -1,121 +1,118 @@
 package com.ll;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+
 
 public class Calc {
+
+
     static double run(String str){
+        str = str.replaceAll("[(]","( ");
+        str = str.replaceAll("[)]"," )");
+
         List<String> arr = new ArrayList<>(Arrays.stream(str.split(" ")).toList());
-        /*
-        List<Integer> arrLater = new ArrayList<>();
-        List<Integer> arrFirst = new ArrayList<>();
-
         double result = 0;
-        for(int i = 0; i<arr.size(); i++){
-            Pattern pattern = Pattern.compile(Pattern.quote(arr.get(i)));
+        result = Double.parseDouble(loop(arr).getFirst());
 
-            if(matcher.find()){
-                arrFirst.add(i);
-            }
-        }
-        for(int i : arrFirst){
-            arr.forEach(System.out::print);
-            System.out.println();
-            System.out.println(arr.get(i));
-            result =cal(arr,i);
-            System.out.println(result);
-        }
-        List<String>  arr2 = new ArrayList<>(arr.stream().filter(e -> !e.isEmpty()).toList());
-        for(int i = 0; i<arr2.size(); i++){
-            Pattern pattern = Pattern.compile(Pattern.quote(arr2.get(i)));
-            Matcher matcher = pattern.matcher("[+\\-]");
-            if(matcher.find()){
-                arrLater.add(i);
-            }
-        }
-
-        for(int i : arrLater){
-            arr2.forEach(System.out::print);
-            System.out.println();
-            System.out.println(arr2.get(i));
-            result =cal(arr2,i);
-        }
-        */
-        double result = 0;
-        try {
-            result = Double.parseDouble(loop(arr).getFirst());
-        }
-        catch (IndexOutOfBoundsException e){System.out.println(e.toString());}
         return  result;
     }
+    static public HashMap<String, Integer> ParenIndex(List<String> arr){
+        HashMap<String, Integer> parenIndex = new HashMap<>();
+        int start = arr.indexOf("(");
+        if(start == -1) return new HashMap<>();
+        parenIndex.put("start",start);
+        int i = parenIndex.get("start");
+        int count = 0;
+        boolean isEnd = false;
+        while(true){
+            if(isEnd){
+                if(count == 0) {break; }
+                else if(arr.get(i).equals(")")) count--;
+            }
+            else{
+                if(arr.get(i).equals("(")) count++;
+                else if(arr.get(i).equals(")")){
+                    count--;
+                    isEnd = true;
 
-    static List<String> loop(List<String> arr) throws IndexOutOfBoundsException{
-        arr.forEach(System.out::print);
-        System.out.println();
+                }
+
+            }
+            i++;
+        }
+        parenIndex.put("end",i-1);
+        return parenIndex;
+    }
+
+// ((1+1)+1)+(1+1)
+    static List<String> loop(List<String> arr){
+
+        HashMap<String, Integer> parenIndex = ParenIndex(arr);
+        if(parenIndex.containsKey("start")){
+            int start = parenIndex.get("start");
+            int end = parenIndex.get("end");
+            System.out.println(start + ", " + end);
+            List<String> newArr = loop(new ArrayList<>(arr.subList(start+1,end)));
+            for(int i = start; i<=end; i++)
+                arr.remove(start);
+            arr.addAll(start,newArr);
+        }
+        choice(arr);
+
+
+
+        return arr;
+    }
+    public static void choice(List<String> arr){
         if(arr.contains("*")) {
-           int index = arr.indexOf("*");
-            cal(arr,index);
+            int index = arr.indexOf("*");
+            mul(arr,index);
             loop(arr);
         }
         if(arr.contains("/")) {
             int index = arr.indexOf("/");
-            cal(arr,index);
+            divide(arr,index);
             loop(arr);
         }
         if(arr.contains("-")) {
             int index = arr.indexOf("-");
-            cal(arr,index);
+            sub(arr,index);
             loop(arr);
         }
         if(arr.contains("+")) {
             int index = arr.indexOf("+");
-            cal(arr,index);
+            plus(arr,index);
             loop(arr);
         }
-
-        System.out.println(arr);
-        return arr;
     }
 
-
-    public static double cal(List<String> arr, int i){
-        double result = 0;
-        if(arr.get(i).contains("+")) {
-            result = Double.parseDouble(arr.get(i - 1)) + Double.parseDouble(arr.get(i + 1));
-            arr.set(i+1,result+"");
-            arr.remove(i);
-            arr.remove(i-1);
-            return result;
-        }
-        if(arr.get(i).contains("-")) {
-            result = Double.parseDouble(arr.get(i - 1)) - Double.parseDouble(arr.get(i + 1));
-            arr.set(i+1,result+"");
-            arr.remove(i);
-            arr.remove(i-1);
-            return result;
-        }
-        if(arr.get(i).contains("*")) {
-            result = Double.parseDouble(arr.get(i - 1)) * Double.parseDouble(arr.get(i + 1));
-            arr.set(i+1,result+"");
-            arr.set(i-1,"");
-            arr.remove(i);
-            arr.remove(i-1);
-            return result;
-        }
-        if(arr.get(i).contains("/")) {
-            result = Double.parseDouble(arr.get(i - 1)) / Double.parseDouble(arr.get(i + 1));
-            arr.set(i+1,result+"");
-            arr.remove(i);
-            arr.remove(i-1);
-            return result;
-        }
+    public static double plus(List<String> arr, int i){
+        double result = Double.parseDouble(arr.get(i - 1)) + Double.parseDouble(arr.get(i + 1));
+        arr.set(i+1,result+"");
+        arr.remove(i);
+        arr.remove(i-1);
         return result;
     }
+    public static double sub(List<String> arr, int i){
+        double result = Double.parseDouble(arr.get(i - 1)) - Double.parseDouble(arr.get(i + 1));
+        arr.set(i+1,result+"");
+        arr.remove(i);
+        arr.remove(i-1);
+        return result;
+    }
+    public static double mul(List<String> arr, int i){
+        double result = Double.parseDouble(arr.get(i - 1)) * Double.parseDouble(arr.get(i + 1));
+        arr.set(i+1,result+"");
+        arr.remove(i);
+        arr.remove(i-1);
+        return result;
+    }
+    public static double divide(List<String> arr, int i){
+        double result = Double.parseDouble(arr.get(i - 1)) / Double.parseDouble(arr.get(i + 1));
+        arr.set(i+1,result+"");
+        arr.remove(i);
+        arr.remove(i-1);
+        return result;
+    }
+
 }
-//1 나눈다.
-//2 나눈거 기준으로 계산
-//2-1 일단 * / 먼저
-//2-2 그다음에 + 계산해보기

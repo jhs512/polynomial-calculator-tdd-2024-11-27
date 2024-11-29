@@ -118,7 +118,7 @@ public class CaculaotrTest3 {
     void t17() {
         assertThat(Calc.run("10 * 20 + 10 + 5 * 2")).isEqualTo(220);
     }
-/*
+
     @Test
     @DisplayName("(10 + 20) == 30")
     void t18() {
@@ -184,6 +184,6 @@ public class CaculaotrTest3 {
     void t28() {
         assertThat(Calc.run("3 * 1 + (1 - (4 * 1 - (1 - 1)))")).isEqualTo(0);
     }
-    */
+
 
 }
