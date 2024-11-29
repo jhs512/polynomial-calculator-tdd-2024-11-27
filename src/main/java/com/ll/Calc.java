@@ -39,13 +39,14 @@ public class Calc {
                 else if(arr.get(i).equals(")")) count--;
             }
             else{
-                if(contiansIndex(arr,"(",i) != -1) count++;
+                if(arr.get(i).contains("(")) {
+                    count++;
+                }
                 else if(arr.get(i).equals(")")){
                     count--;
                     isEnd = true;
 
                 }
-
             }
             i++;
         }
@@ -55,13 +56,12 @@ public class Calc {
 
 // ((1+1)+1)+(1+1)
     static List<String> loop(List<String> arr){
-        arr.stream().forEach(System.out::print);
-        System.out.println();
+
         HashMap<String, Integer> parenIndex = ParenIndex(arr);
-        if(parenIndex.containsKey("start")){
+        for(;parenIndex.containsKey("start"); parenIndex = ParenIndex(arr)){
+
             int start = parenIndex.get("start");
             int end = parenIndex.get("end");
-            System.out.println(start + ", " + end);
             List<String> newArr = loop(new ArrayList<>(arr.subList(start+1,end)));
             if(arr.get(start).equals("-("))
                 newArr.set(0,"-"+newArr.get(0));
