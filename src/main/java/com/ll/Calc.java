@@ -16,9 +16,18 @@ public class Calc {
 
         return  result;
     }
+    static public int contiansIndex(List<String> arr,String ward,int startIndex){
+        int start = startIndex;
+        for(;start<arr.size(); start++) {
+            if (arr.get(start).contains("("))
+                return start;
+        }
+        return -1;
+    }
     static public HashMap<String, Integer> ParenIndex(List<String> arr){
+
         HashMap<String, Integer> parenIndex = new HashMap<>();
-        int start = arr.indexOf("(");
+        int start = contiansIndex(arr,"(",0);
         if(start == -1) return new HashMap<>();
         parenIndex.put("start",start);
         int i = parenIndex.get("start");
@@ -30,7 +39,7 @@ public class Calc {
                 else if(arr.get(i).equals(")")) count--;
             }
             else{
-                if(arr.get(i).equals("(")) count++;
+                if(contiansIndex(arr,"(",i) != -1) count++;
                 else if(arr.get(i).equals(")")){
                     count--;
                     isEnd = true;
@@ -46,15 +55,19 @@ public class Calc {
 
 // ((1+1)+1)+(1+1)
     static List<String> loop(List<String> arr){
-
+        arr.stream().forEach(System.out::print);
+        System.out.println();
         HashMap<String, Integer> parenIndex = ParenIndex(arr);
         if(parenIndex.containsKey("start")){
             int start = parenIndex.get("start");
             int end = parenIndex.get("end");
             System.out.println(start + ", " + end);
             List<String> newArr = loop(new ArrayList<>(arr.subList(start+1,end)));
+            if(arr.get(start).equals("-("))
+                newArr.set(0,"-"+newArr.get(0));
             for(int i = start; i<=end; i++)
                 arr.remove(start);
+
             arr.addAll(start,newArr);
         }
         choice(arr);
