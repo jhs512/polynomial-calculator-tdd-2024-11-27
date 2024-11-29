@@ -14,10 +14,8 @@ public class Calc {
 	}
 
 	private static int calc(String exp) {
-		//10-20+30
-		String replace = exp.replace(" ", "");
 		//후위 표기식 변환
-		String convertExp = convertExp(replace);
+		String convertExp = convertExp(exp);
 		System.out.println("convertExp = " + convertExp);
 
 		String result = calcResult(convertExp);
@@ -92,38 +90,39 @@ public class Calc {
 	 * @return {@link String}
 	 */
 	private static String convertExp(String exp) {
-		char[] charArray = exp.toCharArray();
+		System.out.println("exp = " + exp);
+		String[] stringArray = exp.split(" ");
+
 		StringBuilder sb = new StringBuilder();
 		int operatorIndex = 0;
 		boolean operatorAppend = true;
 
-		for (int i = 0; i < charArray.length; i++) {
-			//10-20+30
-			//1 0 - 2 0 + 3 0
-			char c = charArray[i];
-			if (isOperactor(c)) {
+		for (int i = 0; i < stringArray.length; i++) {
+			//10 - 20 + 30
+			String s = stringArray[i].trim();
+			if (isOperactor(s)) {
 				if (operatorAppend) {
 					sb.append(",");
 					operatorIndex = i;
 					operatorAppend = false;
 				} else {
-					sb.append("," + charArray[operatorIndex] + ",");
+					sb.append("," + stringArray[operatorIndex] + ",");
 					operatorIndex = i;
 					operatorAppend = false;
 				}
 			} else {
-				sb.append(charArray[i]);
+				sb.append(stringArray[i]);
 			}
 
-			if (i == charArray.length - 1 && !operatorAppend) {
-				sb.append("," + charArray[operatorIndex]);
+			if (i == stringArray.length - 1 && !operatorAppend) {
+				sb.append("," + stringArray[operatorIndex]);
 			}
 		}
 
 		return sb.toString();
 	}
 
-	private static boolean isOperactor(char c) {
-		return c == '+' || c == '-' || c == '*' || c == '/';
+	private static boolean isOperactor(String c) {
+		return c.equals("+") || c.equals("-") || c.equals("*") || c.equals("/");
 	}
 }
