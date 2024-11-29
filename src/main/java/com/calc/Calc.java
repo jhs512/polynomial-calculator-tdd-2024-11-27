@@ -46,7 +46,7 @@ public class Calc {
 
 		//연산자 인덱스 초기화
 		for (int i = 0; i < split.length; i++) {
-			if (split[i].equals("+") || split[i].equals("-")) {
+			if (split[i].equals("+") || split[i].equals("-") || split[i].equals("*")) {
 				operatorIndex = i;
 				break;
 			}
@@ -60,6 +60,10 @@ public class Calc {
 				break;
 			case "-":
 				result = Integer.parseInt(split[operatorIndex - 2]) - Integer.parseInt(split[operatorIndex - 1]);
+				sb.append(result + ",");
+				break;
+			case "*":
+				result = Integer.parseInt(split[operatorIndex - 2]) * Integer.parseInt(split[operatorIndex - 1]);
 				sb.append(result + ",");
 				break;
 		}
