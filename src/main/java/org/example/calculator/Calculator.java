@@ -1,6 +1,4 @@
-package org.example;
-
-import java.util.Stack;
+package org.example.calculator;
 
 public class Calculator {
 
@@ -41,6 +39,7 @@ public class Calculator {
         };
     }
 
+    /* 사용 X
     public int combinedOperations(String expression) {
         if(expression.isEmpty()) {
             throw new IllegalArgumentException("Empty expression");     // 입력값이 없을 때 예외 던짐
@@ -123,4 +122,5 @@ public class Calculator {
         return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
+     */
 }
