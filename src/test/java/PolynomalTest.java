@@ -94,25 +94,25 @@ public class PolynomalTest {
     @Test
     @DisplayName("10 + 5 * 2 == 20")
     void 곱하기먼저() {
-        assertThat(Calc.run("10 + 5 * 2")).isEqualTo(20);
+        assertThat(Calc.run2("10 + 5 * 2")).isEqualTo(20);
     }
 
     @Test
     @DisplayName("20 + 10 + 5 * 2 == 40")
     void 곱하기먼저2() {
-        assertThat(Calc.run("20 + 10 + 5 * 2")).isEqualTo(40);
+        assertThat(Calc.run2("20 + 10 + 5 * 2")).isEqualTo(40);
     }
 
     @Test
     @DisplayName("10 * 20 + 10 + 5 * 2 == 220")
     void t17() {
-        assertThat(Calc.run("10 * 20 + 10 + 5 * 2")).isEqualTo(220);
+        assertThat(Calc.run3("10 * 20 + 10 + 5 * 2")).isEqualTo(220);
     }
 
     @Test
     @DisplayName("(10 + 20) == 30")
     void t18() {
-        assertThat(Calc.run("(10 + 20)")).isEqualTo(30);
+        assertThat(Calc.run2("(10 + 20)")).isEqualTo(30);
     }
 
     @Test
