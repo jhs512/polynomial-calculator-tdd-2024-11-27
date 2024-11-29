@@ -7,6 +7,7 @@ public class Calc {
 
 
     public static int run(String expression) {
+        //식에 괄호가 있다면 true
         if(parenthesesContain(expression)){
             return parentheses(0, expression);
         }else {
@@ -24,21 +25,20 @@ public class Calc {
         Pattern pattern1 = Pattern.compile(regex1);
         Matcher matcher1 = pattern1.matcher(expression);
 
+        //첫번째 순서의 괄호식 계산
         if(matcher1.find()) {
             result = calculateByFormula(result, matcher1.group().substring(1, matcher1.group().length() - 1));
             expression = expression.substring(0, matcher1.start()) + result + expression.substring(matcher1.end(), expression.length());
             result = parentheses(result, expression);
-        }else if(expression.length()<=3){
+        }else if(expression.length()<=3){ //남은 식이 정수만 남았을 때
             result = Integer.parseInt(expression);
-        }else{
+        }else{ //괄호가 있다가 없을 경우
             result = calculateByFormula(result, expression);
         }
 
         return result;
 
     }
-
-
 
     public static int calculateByFormula(int result, String expression) {
 
@@ -50,8 +50,6 @@ public class Calc {
         Pattern pattern2 = Pattern.compile(regex2);
         Matcher matcher2 = pattern2.matcher(expression);
 
-
-        //괄호연산 구현해야함
         if (matcher1.find()) {
             //연산자 인덱스 구하기
             int op_idx = findFirstOperationIndex(expression, '*', '/');
@@ -99,7 +97,6 @@ public class Calc {
             indexB = str.indexOf(b,indexB+1);
         }
 
-
         if (indexA != -1 && indexB != -1) {
             return Math.min(indexA, indexB);
         } else if (indexA != -1) {
@@ -128,18 +125,6 @@ public class Calc {
             }
         }
         return i; // 숫자 끝 인덱스
-    }
-
-    public static int splitExpression(String expression){
-
-        for(int i =0; i<expression.length(); i++){
-            if(expression.charAt(i)=='('){
-
-            }else {
-
-            }
-        }
-        return 1;
     }
 
     public static int calculate(char op, int num1, int num2) {
