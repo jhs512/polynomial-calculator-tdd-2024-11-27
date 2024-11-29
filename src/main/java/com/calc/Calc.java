@@ -73,6 +73,24 @@ public class Calc {
 	private static int getOperatorIndex(String[] exp) {
 		int operatorIndex = 0;
 		boolean hasPriorityOperator = false;
+		int[] parenthesesIndexes = new int[2];
+		boolean hasParentheses = false;
+
+		for (int i = 0; i < exp.length; i++) {
+			if(exp[i].contains("(")) {
+				parenthesesIndexes[0] = i;
+				hasParentheses = true;
+			}
+			if(exp[i].contains(")")) {
+				parenthesesIndexes[1] = i;
+				break;
+			}
+		}
+
+		if (hasParentheses) {
+			exp[parenthesesIndexes[0]] = exp[parenthesesIndexes[0]].replace("(", "");
+			exp[parenthesesIndexes[1]] = exp[parenthesesIndexes[1]].replace(")", "");
+		}
 		// * 가 있는지 찾기
 		for (int i = 0; i < exp.length; i++) {
 			if (exp[i].equals("*") || exp[i].equals("/")) {
