@@ -27,20 +27,33 @@ public class Calc {
 	 */
 	private static void calc(String[] exp) {
 		int operatorIndex = getOperatorIndex(exp);
+		//()가 붙어있는지 저장하는 변수
+		boolean hasParentheses = exp[operatorIndex - 1].contains("(");
+		// ()랑 -가 붙어있는지 확인
+		boolean isNegativePrefix = exp[operatorIndex - 1].contains("-") && hasParentheses;
+		// ()가 붙어있다면
+		if (hasParentheses) {
+			exp[operatorIndex - 1] = exp[operatorIndex - 1].replace("(", "");
+			exp[operatorIndex + 1] = exp[operatorIndex + 1].replace(")", "");
+		}
+		// -가 붙어있다면
+		if (isNegativePrefix) {
+			exp[operatorIndex - 1] = exp[operatorIndex - 1].replace("-", "");
+		}
 
 		//연산자 앞 뒤 숫자 찾아서 연산
 		switch (exp[operatorIndex]) {
 			case "+":
 				int sum = sum(Integer.parseInt(exp[operatorIndex - 1]), Integer.parseInt(exp[operatorIndex + 1]));
 
-				resultInsert(exp, operatorIndex, sum);
+				resultInsert(exp, operatorIndex, sum, isNegativePrefix);
 				shiftArray(exp, operatorIndex);
 
 				break;
 			case "-":
 				int minus = minus(Integer.parseInt(exp[operatorIndex - 1]), Integer.parseInt(exp[operatorIndex + 1]));
 
-				resultInsert(exp, operatorIndex, minus);
+				resultInsert(exp, operatorIndex, minus, isNegativePrefix);
 				shiftArray(exp, operatorIndex);
 
 				break;
@@ -48,7 +61,7 @@ public class Calc {
 				int multiplication = multiplication(Integer.parseInt(exp[operatorIndex - 1]),
 					Integer.parseInt(exp[operatorIndex + 1]));
 
-				resultInsert(exp, operatorIndex, multiplication);
+				resultInsert(exp, operatorIndex, multiplication, isNegativePrefix);
 				shiftArray(exp, operatorIndex);
 
 				break;
@@ -72,8 +85,11 @@ public class Calc {
 	 */
 	private static int getOperatorIndex(String[] exp) {
 		int operatorIndex = 0;
+		//우선순위 연산자가 붙어있는지 저장하는 변수
 		boolean hasPriorityOperator = false;
+		//() 인덱스 값 저장하는 변수
 		int[] parenthesesIndexes = new int[2];
+		//()가 붙어있는지 저정하는 변수
 		boolean hasParentheses = false;
 
 		for (int i = 0; i < exp.length; i++) {
@@ -87,9 +103,8 @@ public class Calc {
 			}
 		}
 
+		//()가 붙어있을 때
 		if (hasParentheses) {
-			exp[parenthesesIndexes[0]] = exp[parenthesesIndexes[0]].replace("(", "");
-			exp[parenthesesIndexes[1]] = exp[parenthesesIndexes[1]].replace(")", "");
 			for (int i = parenthesesIndexes[0]; i < exp.length; i++) {
 				if (exp[i].equals("*") || exp[i].equals("/") || exp[i].equals("+") || exp[i].equals("-")) {
 					operatorIndex = i;
@@ -105,10 +120,12 @@ public class Calc {
 			}
 			hasPriorityOperator = operatorIndex != 0;
 
+			//우선순위 연산자가 없을 때
 			if (!hasPriorityOperator) {
 				for (int i = 0; i < exp.length; i++) {
 					if (exp[i].equals("+") || exp[i].equals("-")) {
 						operatorIndex = i;
+						break;
 					}
 				}
 			}
@@ -121,10 +138,16 @@ public class Calc {
 	 *
 	 * @param exp 연산 결과가 담기지 않은 배열
 	 * @param operatorIndex 연산자 인덱스 값
-	 * @param sum
+	 * @param result 연산 결과 값
+	 * @param isNegativePrefix -기호 앞에 붙었는지 안 붙었는지 여부
 	 */
-	private static void resultInsert(String[] exp, int operatorIndex, int sum) {
-		exp[operatorIndex - 1] = String.valueOf(sum);
+	private static void resultInsert(String[] exp, int operatorIndex, int result, boolean isNegativePrefix) {
+		//앞에 -가 붙었을 때
+		if (isNegativePrefix) {
+			exp[operatorIndex - 1] = "-" + result;
+		} else {
+			exp[operatorIndex - 1] = String.valueOf(result);
+		}
 		exp[operatorIndex] = "";
 		exp[operatorIndex + 1] = "";
 	}
