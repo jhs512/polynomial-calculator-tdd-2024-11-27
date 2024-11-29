@@ -112,18 +112,15 @@ public class Calc {
 					stringArray[i] = "";
 				}
 			}
-		}
 
-		// +, - 연산자 처리
-		for (int i = 0; i < stringArray.length; i++) {
-			//10 - 20 + 30
-			String s = stringArray[i].trim();
 			if (isOperactor(s)) {
 				if (s.equals("+") || s.equals("-")) {
 					String left = stringArray[i - 1].isBlank() ? "" : stringArray[i - 1] + ",";
 					String right = stringArray[i + 1].isBlank() ? "" : stringArray[i + 1] + ",";
 					String operator = s + ",";
 					sb.append(left + right + operator);
+					stringArray[i - 1] = "";
+					stringArray[i + 1] = "";
 				}
 			}
 
