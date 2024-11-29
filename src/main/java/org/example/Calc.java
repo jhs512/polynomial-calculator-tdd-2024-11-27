@@ -13,7 +13,7 @@ public class Calc {
         for(int i=0; i<expr.length(); i++){
             char c = expr.charAt(i);
 
-            if(c=='-'){
+            if(c=='-'){ // ex) -3 * 5 , 3 * -5 , (2+3) * -5 같은 경우 처리
                 if(i==0 || !Character.isDigit(expr.charAt(i-1)) && expr.charAt(i-1) != ')'){
                     flag = true;
                     continue;
