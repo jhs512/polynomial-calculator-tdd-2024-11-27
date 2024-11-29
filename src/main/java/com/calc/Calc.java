@@ -26,7 +26,9 @@ public class Calc {
 		for (int i = 0; i < exp.length; i++) {
 			exp[i] = exp[i].trim();
 			if (exp[i].equals("+") || exp[i].equals("-")) {
+				System.out.println("operator = " + exp[i]);
 				operatorIndex = i;
+				break;
 			}
 		}
 
@@ -42,6 +44,7 @@ public class Calc {
 				int minus = minus(Integer.parseInt(exp[operatorIndex - 1]), Integer.parseInt(exp[operatorIndex + 1]));
 
 				resultInsert(exp, operatorIndex, minus);
+				shiftArray(exp, operatorIndex);
 
 				break;
 
@@ -49,6 +52,7 @@ public class Calc {
 
 		System.out.print("Calc.calc= ");
 		Arrays.stream(expArray).forEach((s) -> System.out.print(s + " "));
+		System.out.print("\n");
 
 		if (!exp[1].isBlank()) {
 			calc(exp);
@@ -73,8 +77,7 @@ public class Calc {
 	private static void shiftArray(String[] stringArray, int index) {
 		for (int i = index + 2; i < stringArray.length; i++) {
 			stringArray[i - 2] = stringArray[i];
+			stringArray[i] = "";
 		}
-		stringArray[index] = "";
-		stringArray[index + 1] = "";
 	}
 }
