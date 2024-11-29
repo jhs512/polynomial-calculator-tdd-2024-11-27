@@ -20,7 +20,7 @@ public class Calc {
 
 		String result = calcResult(convertExp);
 
-		while(result.contains(",")) {
+		while (result.contains(",")) {
 			result = calcResult(result);
 		}
 
@@ -69,7 +69,7 @@ public class Calc {
 		System.out.println("operatorIndex = " + operatorIndex);
 		System.out.println("sb.toString() = " + sb.toString());
 
-		for (int i = operatorIndex+1; i < split.length; i++) {
+		for (int i = operatorIndex + 1; i < split.length; i++) {
 			if (i == split.length - 1) {
 				System.out.println("split = " + split[i]);
 				sb.append(split[i]);
@@ -92,10 +92,7 @@ public class Calc {
 	private static String convertExp(String exp) {
 		System.out.println("exp = " + exp);
 		String[] stringArray = exp.split(" ");
-
 		StringBuilder sb = new StringBuilder();
-		int operatorIndex = 0;
-		boolean operatorAppend = true;
 
 		//* 연산자 먼저 처리
 		for (int i = 0; i < stringArray.length; i++) {
@@ -103,33 +100,51 @@ public class Calc {
 			if (isOperactor(s)) {
 				if (s.equals("*")) {
 					System.out.println("s = " + s);
-					String left = stringArray[i - 1].isBlank() ? "" : stringArray[i - 1] + ",";
-					String right = stringArray[i + 1].isBlank() ? "" : stringArray[i + 1] + ",";
-					String operator = s + ",";
-					sb.append(left + right + operator);
-					stringArray[i - 1] = "";
-					stringArray[i + 1] = "";
-					stringArray[i] = "";
+					proccessOperator(stringArray, i, s, sb);
 				}
 			}
+		}
 
+		for (int i = 0; i < stringArray.length; i++) {
+			String s = stringArray[i].trim();
 			if (isOperactor(s)) {
 				if (s.equals("+") || s.equals("-")) {
-					String left = stringArray[i - 1].isBlank() ? "" : stringArray[i - 1] + ",";
-					String right = stringArray[i + 1].isBlank() ? "" : stringArray[i + 1] + ",";
-					String operator = s + ",";
-					sb.append(left + right + operator);
-					stringArray[i - 1] = "";
-					stringArray[i + 1] = "";
+					proccessOperator(stringArray, i, s, sb);
 				}
 			}
 
-			if (i == stringArray.length - 1) {
+			if (i == stringArray.length - 1 && !stringArray[i].contains("")) {
 				sb.deleteCharAt(sb.length() - 1);
 			}
 		}
 
 		return sb.toString();
+	}
+
+	private static void proccessOperator(String[] stringArray, int i, String s, StringBuilder sb) {
+		String left = stringArray[i - 1].isBlank() ? "" : stringArray[i - 1] + ",";
+		String right = stringArray[i + 1].isBlank() ? "" : stringArray[i + 1] + ",";
+		String operator = s + ",";
+
+		if (sb.length() != 0 && !Character.isDigit(sb.charAt(sb.length() - 2))) {
+			if (sb.charAt(sb.length() - 2) == '*' && !s.equals("*")) {
+				sb.append(left + operator);
+				stringArray[i - 1] = "";
+				stringArray[i] = "";
+
+			} else {
+				sb.append(left + right + operator);
+				stringArray[i - 1] = "";
+				stringArray[i + 1] = "";
+				stringArray[i] = "";
+
+			}
+		} else {
+			sb.append(left + right + operator);
+			stringArray[i - 1] = "";
+			stringArray[i + 1] = "";
+			stringArray[i] = "";
+		}
 	}
 
 	private static boolean isOperactor(String c) {
