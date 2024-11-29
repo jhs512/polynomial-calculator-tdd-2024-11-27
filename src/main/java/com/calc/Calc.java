@@ -77,11 +77,11 @@ public class Calc {
 		boolean hasParentheses = false;
 
 		for (int i = 0; i < exp.length; i++) {
-			if(exp[i].contains("(")) {
+			if (exp[i].contains("(")) {
 				parenthesesIndexes[0] = i;
 				hasParentheses = true;
 			}
-			if(exp[i].contains(")")) {
+			if (exp[i].contains(")")) {
 				parenthesesIndexes[1] = i;
 				break;
 			}
@@ -90,23 +90,29 @@ public class Calc {
 		if (hasParentheses) {
 			exp[parenthesesIndexes[0]] = exp[parenthesesIndexes[0]].replace("(", "");
 			exp[parenthesesIndexes[1]] = exp[parenthesesIndexes[1]].replace(")", "");
-		}
-		// * 가 있는지 찾기
-		for (int i = 0; i < exp.length; i++) {
-			if (exp[i].equals("*") || exp[i].equals("/")) {
-				operatorIndex = i;
-			}
-		}
-		hasPriorityOperator = operatorIndex != 0;
-
-		if (!hasPriorityOperator) {
 			for (int i = 0; i < exp.length; i++) {
-				if (exp[i].equals("+") || exp[i].equals("-")) {
+				if (exp[i].equals("*") || exp[i].equals("/") || exp[i].equals("+") || exp[i].equals("-")) {
+					operatorIndex = i;
+					break;
+				}
+			}
+		} else {
+			// * 가 있는지 찾기
+			for (int i = 0; i < exp.length; i++) {
+				if (exp[i].equals("*") || exp[i].equals("/")) {
 					operatorIndex = i;
 				}
 			}
-		}
+			hasPriorityOperator = operatorIndex != 0;
 
+			if (!hasPriorityOperator) {
+				for (int i = 0; i < exp.length; i++) {
+					if (exp[i].equals("+") || exp[i].equals("-")) {
+						operatorIndex = i;
+					}
+				}
+			}
+		}
 		return operatorIndex;
 	}
 
