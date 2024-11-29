@@ -1,7 +1,6 @@
 package com.ll;
 
-import java.util.List;
-
+//계산
 public class Calculator {
     public static double plus(String n1, String n2){
         return Double.parseDouble(n1) + Double.parseDouble(n2);
