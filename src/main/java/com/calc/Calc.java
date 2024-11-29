@@ -97,25 +97,38 @@ public class Calc {
 		int operatorIndex = 0;
 		boolean operatorAppend = true;
 
+		//* 연산자 먼저 처리
+		for (int i = 0; i < stringArray.length; i++) {
+			String s = stringArray[i].trim();
+			if (isOperactor(s)) {
+				if (s.equals("*")) {
+					System.out.println("s = " + s);
+					String left = stringArray[i - 1].isBlank() ? "" : stringArray[i - 1] + ",";
+					String right = stringArray[i + 1].isBlank() ? "" : stringArray[i + 1] + ",";
+					String operator = s + ",";
+					sb.append(left + right + operator);
+					stringArray[i - 1] = "";
+					stringArray[i + 1] = "";
+					stringArray[i] = "";
+				}
+			}
+		}
+
+		// +, - 연산자 처리
 		for (int i = 0; i < stringArray.length; i++) {
 			//10 - 20 + 30
 			String s = stringArray[i].trim();
 			if (isOperactor(s)) {
-				if (operatorAppend) {
-					sb.append(",");
-					operatorIndex = i;
-					operatorAppend = false;
-				} else {
-					sb.append("," + stringArray[operatorIndex] + ",");
-					operatorIndex = i;
-					operatorAppend = false;
+				if (s.equals("+") || s.equals("-")) {
+					String left = stringArray[i - 1].isBlank() ? "" : stringArray[i - 1] + ",";
+					String right = stringArray[i + 1].isBlank() ? "" : stringArray[i + 1] + ",";
+					String operator = s + ",";
+					sb.append(left + right + operator);
 				}
-			} else {
-				sb.append(stringArray[i]);
 			}
 
-			if (i == stringArray.length - 1 && !operatorAppend) {
-				sb.append("," + stringArray[operatorIndex]);
+			if (i == stringArray.length - 1) {
+				sb.deleteCharAt(sb.length() - 1);
 			}
 		}
 
