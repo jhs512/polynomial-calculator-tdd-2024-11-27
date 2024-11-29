@@ -90,7 +90,7 @@ public class Calc {
 		if (hasParentheses) {
 			exp[parenthesesIndexes[0]] = exp[parenthesesIndexes[0]].replace("(", "");
 			exp[parenthesesIndexes[1]] = exp[parenthesesIndexes[1]].replace(")", "");
-			for (int i = 0; i < exp.length; i++) {
+			for (int i = parenthesesIndexes[0]; i < exp.length; i++) {
 				if (exp[i].equals("*") || exp[i].equals("/") || exp[i].equals("+") || exp[i].equals("-")) {
 					operatorIndex = i;
 					break;
