@@ -66,7 +66,7 @@ public class Postfix {
     }
 
     /**
-     * main.postfix 계산 - Stack 사용
+     * postfix 계산 - Stack 사용
      * 1. 피연산자를 만나면 stack에 push 한다.
      * 2. 연산자를 만나면 2개의 피연산자를 pop 하여 연산을 수행하고 결과 값을 다시 push 한다.
      * 3. 수식이 끝나면 마지막으로 pop 하여 최종 결과 값을 리턴한다.
@@ -92,6 +92,44 @@ public class Postfix {
         }
 
         return stack.pop();
+    }
+
+
+    private int idx;
+    public int calculatePostfixRecursive(String expression) {
+        String[] split = expression.split(",");
+        idx = split.length - 1;
+        return recurPostfix(split);
+    }
+
+    /**
+     * postfix 계산 - 재귀 방식
+     * 1. 후위 표기법으로 변환한 연산식을 앞에서 부터 처리한다.
+     * 2. 매개 변수로 후위 표기식 배열을 받는다.
+     * 3. 연산식은 뒤에서 부터 처리한다.
+     * 4. 숫자가 나오면 리턴
+     * 5. 연산자가 나오면 재귀함수로 숫자를 받아서 계산
+     */
+
+    private int recurPostfix(String[] expression) {
+        // 마지막 '-' 연산 처리를 위해 0 리턴
+        if(idx < 0) {
+            return 0;
+        }
+
+        String target = expression[idx--];
+
+        // 숫자인 경우 그대로 리턴
+        if (isNumber(target)) {
+            return Integer.parseInt(target);
+        }
+
+        // 연산자인 경우 재귀로 리턴 받은 숫자로 계산함
+        int num2 = recurPostfix(expression);
+        int num1 = recurPostfix(expression);
+
+        // 연산결과 리턴
+        return calculator.calculate(target.charAt(0), num2, num1);
     }
 
     private int priority(String op) {
