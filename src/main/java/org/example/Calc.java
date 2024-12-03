@@ -43,37 +43,6 @@ public class Calc {
 
     //("10 + 5 * 2 == 20")
     // 15 ~ 16
-    public static Integer run2(String str) { // str = 10 + 5 * 2
-        if (opIndexPM(str) == -1) {
-            return Integer.parseInt(str);
-        }
-
-        int operatorIndex = opIndexPM(str);
-        char operator = str.charAt(operatorIndex);
-        String leftOperand = str.substring(0, operatorIndex).trim();
-        String rightOperand = str.substring(operatorIndex + 1).trim();
-        int result = 0;
-
-        int leftCalc = run2(leftOperand);
-        int rightCalc = run2(rightOperand);
-
-        switch (operator) {
-            case '+':
-                result = leftCalc + rightCalc;
-                break;
-            case '-':
-                result = leftCalc - rightCalc;
-                break;
-            case '*':
-                result = leftCalc * rightCalc;
-                break;
-            case '/':
-                result = leftCalc / rightCalc;
-                break;
-        }
-        return Optional.of(result).get();
-    }
-
     public static Integer run3(String str) { // str = 10 * 20 + 10 + 5 * 2 == 220
         if (opIndexPM(str) == -1 && opIndexMD(str) == -1) return Integer.parseInt(str);
         int result = 0;
@@ -110,8 +79,13 @@ public class Calc {
         return Optional.of(result).get();
     }
 
+    // 18 - 22
     public static int run4(String str) { // str = (10 + 20)
         if (opIndexPM(str) == -1 && opIndexMD(str) == -1) return Integer.parseInt(str);
+        if(str.contains("(") || str.contains(")")) {
+            String string = removeParentheis(str);
+            return run4(string);
+        }
         int result = 0;
 
 //        int operatorIndex = operatorIndex(str);
@@ -132,8 +106,9 @@ public class Calc {
 
         String left = str.substring(0, index).trim();
         String right = str.substring(index + 1).trim();
-        int leftNum = run3(left);
-        int rightNum = run3(right);
+
+        int leftNum = run4(left);
+        int rightNum = run4(right);
 
         if (pmOperator != 0) { //   +나 -가 있다면 양쪽으로 나누기 ==   * 나 /만 있는 연산으로 남기기 위해
             result += calcMain(leftNum, rightNum, pmOperator);
@@ -142,6 +117,50 @@ public class Calc {
         }
 
         return Optional.of(result).get();
+    }
+
+    public static int run5(String str) { // str = (10 + 20)
+        if (opIndexPM(str) == -1 && opIndexMD(str) == -1) return Integer.parseInt(str);
+        if(str.contains("(") || str.contains(")")) {
+            String string = removeParentheis(str);
+            return run4(string);
+        }
+        int result = 0;
+
+//        int operatorIndex = operatorIndex(str);
+        int opIndexMD = opIndexMD(str);
+        char mdOperator = 0;
+        if (opIndexMD != -1) mdOperator = str.charAt(opIndexMD); // * /  만 고르는거
+
+        int opIndexPM = opIndexPM(str);
+        char pmOperator = 0;
+        if (opIndexPM != -1) pmOperator = str.charAt(opIndexPM); // + - 만 고르는거
+
+        int index = 0;
+        if (opIndexPM != -1) {
+            index = opIndexPM;
+        } else {
+            index = opIndexMD;
+        }
+
+        String left = str.substring(0, index).trim();
+        String right = str.substring(index + 1).trim();
+
+        int leftNum = run4(left);
+        int rightNum = run4(right);
+
+        if (pmOperator != 0) { //   +나 -가 있다면 양쪽으로 나누기 ==   * 나 /만 있는 연산으로 남기기 위해
+            result += calcMain(leftNum, rightNum, pmOperator);
+        } else {
+            result += calcMain(leftNum, rightNum, mdOperator);
+        }
+
+        return Optional.of(result).get();
+    }
+
+    // 괄호 지우기
+    private static String removeParentheis(String str) {
+        return str.replaceAll("[()]", "");
     }
 
     private static int calcMain(int leftNum, int rightNum, char operator) {
