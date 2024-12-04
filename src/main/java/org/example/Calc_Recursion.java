@@ -100,27 +100,6 @@ public class Calc_Recursion {
         }
 
         return exp;
-
-//        List<String> tokens = new ArrayList<>();
-//        StringBuilder builder = new StringBuilder();
-//
-//        for(char c : expression.toCharArray()) {
-//            if(c==' '){
-//                continue;
-//            }
-//
-//            if(Character.isDigit(c) || c=='+' || c=='-' || c=='*' || c=='/') {
-//                if(builder.length()>0) {
-//                    tokens.add(builder.toString());
-//                    builder.setLength(0);
-//                }
-//                tokens.add(String.valueOf(c));
-//            }
-//        }
-//        if(builder.length()>0) {
-//            tokens.add(builder.toString());
-//        }
-//        return tokens;
     }
 
     public static boolean isOperator(String token) {
