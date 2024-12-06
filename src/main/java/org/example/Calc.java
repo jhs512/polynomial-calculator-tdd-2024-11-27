@@ -4,14 +4,19 @@ import java.util.Optional;
 
 public class Calc {
 
-    // 23 ~ 26
-    public static int run(String str) { // 3 * 1 + (1 - (4 * 1 - (1 - 1)))
+    // except 28 22 20 19 10 9
+    // 3 * 1 + (1 - (4 * 1 - (1 - 1)))
+    public static int run(String str) {
         int leftIndex = 0; // ( 인덱스
         int rightIndex = 0; // ) 인덱스
+        String leftString = "";
+        String rightString = "";
+        str = str.replaceAll(" - ", " + -");
+
         if (opIndexPM(str) == -1 && opIndexMD(str) == -1) return Integer.parseInt(str); // 연산이 아무것도 없으면 끝.
         else if (isNumberic(str)) return Integer.parseInt(str); // 음의 정수만 있어도 끝내기
 
-        if (str.contains("(") || str.contains(")")) {
+        if (str.contains("(") || str.contains(")")) { // 괄호 있으면 작동함
             String firstCalc = ""; // 괄호 계산 식  (결과 아님)
             String secondCalc = "";
 
@@ -31,17 +36,15 @@ public class Calc {
 
         if (opIndexMD != -1) mdOperator = str.charAt(opIndexMD); // * /  만 고르는거
         if (opIndexPM != -1) pmOperator = str.charAt(opIndexPM); // + - 만 고르는거
-
-        String left = "";  String right = "";
         if (opIndexPM != -1) {
-            left = str.substring(0, opIndexPM).trim();
-            right = str.substring(opIndexPM + 1).trim();
+            leftString = str.substring(0, opIndexPM).trim();
+            rightString = str.substring(opIndexPM + 1).trim();
         } else {
-            left = str.substring(0, opIndexMD).trim();
-            right = str.substring(opIndexMD + 1).trim();
+            leftString = str.substring(0, opIndexMD).trim();
+            rightString = str.substring(opIndexMD + 1).trim();
         }
-        int leftNum = run(left);
-        int rightNum = run(right);
+        int leftNum = run(leftString);
+        int rightNum = run(rightString);
 
         int result = 0;
         if (pmOperator != 0) { //   +나 -가 있다면 양쪽으로 나누기 ==   * 나 /만 있는 연산으로 남기기 위해
@@ -49,8 +52,8 @@ public class Calc {
         } else {
             result += calcMain(leftNum, rightNum, mdOperator);
         }
-
         return Optional.of(result).get();
+
     }
 
     public static boolean isNumberic(String str) {
@@ -103,7 +106,7 @@ public class Calc {
 
     private static int opIndexPM(String str) {
         for (int i = 0; i < str.length(); i++) {
-            if ("+-".indexOf(str.charAt(i)) >= 0 && !isNumberic(String.valueOf(str.charAt(i+1)))) {
+            if ("+-".indexOf(str.charAt(i)) >= 0 && !isNumberic(String.valueOf(str.charAt(i + 1)))) {
                 return i;
             }
         }
