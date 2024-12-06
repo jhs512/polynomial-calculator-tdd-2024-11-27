@@ -148,13 +148,13 @@ public class PolynomalTest {
     @Test
     @DisplayName("10 + (10 + 5) == 25")
     void t24() {
-        assertThat(Calc.run4("10 + (10 + 5)")).isEqualTo(25);
+        assertThat(Calc.run5("10 + (10 + 5)")).isEqualTo(25);
     }
 
     @Test
     @DisplayName("-(10 + 5) == -15")
     void t25() {
-        assertThat(Calc.run4("-(10 + 5)")).isEqualTo(-15);
+        assertThat(Calc.run5("-(10 + 5)")).isEqualTo(-15);
     }
 //
 //    @Test
