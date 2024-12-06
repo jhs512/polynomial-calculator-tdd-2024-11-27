@@ -57,13 +57,13 @@ public class PolynomalTest {
 
     @Test
     @DisplayName("10 - 20 + 30 == 20")
-    void 숫자가세개지요2() {
+    void t9() {
         assertThat(Calc.run("10 - 20 + 30")).isEqualTo(20);
     }
 
     @Test
     @DisplayName("10 - 10 - 10 - 10 == -20")
-    void 숫자가네개지요() {
+    void t10() {
         assertThat(Calc.run("10 - 10 - 10 - 10")).isEqualTo(-20);
     }
 
@@ -94,84 +94,84 @@ public class PolynomalTest {
     @Test
     @DisplayName("10 + 5 * 2 == 20")
     void 곱하기먼저() {
-        assertThat(Calc.run3("10 + 5 * 2")).isEqualTo(20);
+        assertThat(Calc.run("10 + 5 * 2")).isEqualTo(20);
     }
 
     @Test
     @DisplayName("20 + 10 + 5 * 2 == 40")
     void 곱하기먼저2() {
-        assertThat(Calc.run3("20 + 10 + 5 * 2")).isEqualTo(40);
+        assertThat(Calc.run("20 + 10 + 5 * 2")).isEqualTo(40);
     }
 
     @Test
     @DisplayName("10 * 20 + 10 + 5 * 2 == 220")
     void t17() {
-        assertThat(Calc.run3("10 * 20 + 10 + 5 * 2")).isEqualTo(220);
+        assertThat(Calc.run("10 * 20 + 10 + 5 * 2")).isEqualTo(220);
     }
 
     @Test
     @DisplayName("(10 + 20) == 30")
     void t18() {
-        assertThat(Calc.run4("(10 + 20)")).isEqualTo(30);
+        assertThat(Calc.run("(10 + 20)")).isEqualTo(30);
     }
 
     @Test
     @DisplayName("((10 + 20)) == 30")
     void t19() {
-        assertThat(Calc.run4("((10 + 20))")).isEqualTo(30);
+        assertThat(Calc.run("((10 + 20))")).isEqualTo(30);
     }
 
     @Test
     @DisplayName("(((10 + 20))) == 30")
     void t20() {
-        assertThat(Calc.run4("(((10 + 20)))")).isEqualTo(30);
+        assertThat(Calc.run("(((10 + 20)))")).isEqualTo(30);
     }
 
     @Test
     @DisplayName("(20 + 20) + 20 == 60")
     void t21() {
-        assertThat(Calc.run4("(20 + 20) + 20")).isEqualTo(60);
+        assertThat(Calc.run("(20 + 20) + 20")).isEqualTo(60);
     }
 
     @Test
     @DisplayName("((20 + 20)) + 20 == 60")
     void t22() {
-        assertThat(Calc.run4("((20 + 20)) + 20")).isEqualTo(60);
+        assertThat(Calc.run("((20 + 20)) + 20")).isEqualTo(60);
     }
 
     @Test
     @DisplayName("(10 + 20) * 3 == 90")
     void t23() {
-        assertThat(Calc.run5("(10 + 20) * 3")).isEqualTo(90);
+        assertThat(Calc.run("(10 + 20) * 3")).isEqualTo(90);
     }
 
     @Test
     @DisplayName("10 + (10 + 5) == 25")
     void t24() {
-        assertThat(Calc.run5("10 + (10 + 5)")).isEqualTo(25);
+        assertThat(Calc.run("10 + (10 + 5)")).isEqualTo(25);
     }
 
     @Test
     @DisplayName("-(10 + 5) == -15")
     void t25() {
-        assertThat(Calc.run5("-(10 + 5)")).isEqualTo(-15);
+        assertThat(Calc.run("-(10 + 5)")).isEqualTo(-15);
     }
-//
-//    @Test
-//    @DisplayName("-(8 + 2) * -(7 + 3) + 5 == 105")
-//    void t26() {
-//        assertThat(Calc.run("-(8 + 2) * -(7 + 3) + 5")).isEqualTo(105);
-//    }
-//
-//    @Test
-//    @DisplayName("5 - (1 + 5) == -1")
-//    void t27() {
-//        assertThat(Calc.run("5 - (1 + 5)")).isEqualTo(-1);
-//    }
-//
-//    @Test
-//    @DisplayName("3 * 1 + (1 - (4 * 1 - (1 - 1))) == 0")
-//    void t28() {
-//        assertThat(Calc.run("3 * 1 + (1 - (4 * 1 - (1 - 1)))")).isEqualTo(0);
-//    }
+
+    @Test
+    @DisplayName("-(8 + 2) * -(7 + 3) + 5 == 105")
+    void t26() {
+        assertThat(Calc.run("-(8 + 2) * -(7 + 3) + 5")).isEqualTo(105);
+    }
+
+    @Test
+    @DisplayName("5 - (1 + 5) == -1")
+    void t27() {
+        assertThat(Calc.run("5 - (1 + 5)")).isEqualTo(-1);
+    }
+
+    @Test
+    @DisplayName("3 * 1 + (1 - (4 * 1 - (1 - 1))) == 0")
+    void t28() {
+        assertThat(Calc.run("3 * 1 + (1 - (4 * 1 - (1 - 1)))")).isEqualTo(0);
+    }
 }
