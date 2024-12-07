@@ -4,7 +4,7 @@ import java.util.Optional;
 
 public class Calc {
 
-    // except 28 22 20 19 10 9
+    // except 28 22
     // 3 * 1 + (1 - (4 * 1 - (1 - 1)))
     public static int run(String str) {
         int leftIndex = 0; // ( 인덱스
@@ -13,22 +13,24 @@ public class Calc {
         String rightString = "";
         str = str.replaceAll(" - ", " + -");
 
-        if (opIndexPM(str) == -1 && opIndexMD(str) == -1) return Integer.parseInt(str); // 연산이 아무것도 없으면 끝.
-        else if (isNumberic(str)) return Integer.parseInt(str); // 음의 정수만 있어도 끝내기
-
-        if (str.contains("(") || str.contains(")")) { // 괄호 있으면 작동함
+        // 30)) 이 와도 이게 실행됨.
+        if ((str.contains("(") || str.contains(")")) && !(opIndexPM(str) == -1 && opIndexMD(str) == -1)) { // 괄호 있으면 작동함
             String firstCalc = ""; // 괄호 계산 식  (결과 아님)
             String secondCalc = "";
 
             leftIndex = str.indexOf("(");
             rightIndex = str.indexOf(")");
 
-            firstCalc = str.substring(leftIndex, rightIndex + 1); // 괄호 식 , + 1은 ) 괄호가 안붙어짐.
+            firstCalc = str.substring(leftIndex, rightIndex+1); // 괄호 식 , + 1은 ( 괄호가 안붙어짐.
             secondCalc = firstCalc.replaceAll("[()]", "");
             String afterCalc = String.valueOf(run(secondCalc)); // 괄호 결과를 문자로 .
             str = str.replace(firstCalc, afterCalc);
             return run(str);
         }
+        else if((opIndexPM(str) == -1 && opIndexMD(str) == -1) && (str.contains("(") || str.contains(")"))) return Integer.parseInt(str.replaceAll("[()]", ""));
+        else if (opIndexPM(str) == -1 && opIndexMD(str) == -1) return Integer.parseInt(str); // 연산이 아무것도 없으면 끝.
+        else if (isNumberic(str)) return Integer.parseInt(str); // 음의 정수만 있어도 끝내기
+
         int opIndexMD = opIndexMD(str);
         int opIndexPM = opIndexPM(str);
         char mdOperator = 0;
