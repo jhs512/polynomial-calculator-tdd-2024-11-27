@@ -13,8 +13,7 @@ public class Calc {
         String rightString = "";
         str = str.replaceAll(" - ", " + -");
 
-        // 30)) 이 와도 이게 실행됨.
-        if ((str.contains("(") || str.contains(")")) && !(opIndexPM(str) == -1 && opIndexMD(str) == -1)) { // 괄호 있으면 작동함
+        if ((str.contains("(") && str.contains(")")) && !(opIndexPM(str) == -1 && opIndexMD(str) == -1)) { // 괄호 ( ) + 연산식 있으면
             String firstCalc = ""; // 괄호 계산 식  (결과 아님)
             String secondCalc = "";
 
@@ -27,8 +26,13 @@ public class Calc {
             str = str.replace(firstCalc, afterCalc);
             return run(str);
         }
+        // 연산식이 없고, 괄호 ( 또는 )가 있을때 ex. str = 40)
         else if((opIndexPM(str) == -1 && opIndexMD(str) == -1) && (str.contains("(") || str.contains(")"))) return Integer.parseInt(str.replaceAll("[()]", ""));
+        // 40) + 20 처럼 괄호가 둘 중 하나고 연산식이 있을때
+        else if(!(opIndexPM(str) == -1 || opIndexMD(str) == -1) && (str.contains("(") || str.contains(")"))) return run(str.replaceAll("[()]", ""));
+
         else if (opIndexPM(str) == -1 && opIndexMD(str) == -1) return Integer.parseInt(str); // 연산이 아무것도 없으면 끝.
+        // 그냥 정수만 있으면 끝내기
         else if (isNumberic(str)) return Integer.parseInt(str); // 음의 정수만 있어도 끝내기
 
         int opIndexMD = opIndexMD(str);
