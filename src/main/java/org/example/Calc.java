@@ -4,9 +4,8 @@ import java.util.Optional;
 
 public class Calc {
 
-    // except 28 22
-    // 3 * 1 + (1 - (4 * 1 - (1 - 1)))
-    public static int run(String str) {
+    // except 28
+    public static int run(String str) {// 3 * 1 + (1 - (4 * 1 - (1 - 1)))
         int leftIndex = 0; // ( 인덱스
         int rightIndex = 0; // ) 인덱스
         String leftString = "";
@@ -20,8 +19,18 @@ public class Calc {
             leftIndex = str.indexOf("(");
             rightIndex = str.indexOf(")");
 
-            firstCalc = str.substring(leftIndex, rightIndex+1); // 괄호 식 , + 1은 ( 괄호가 안붙어짐.
-            secondCalc = firstCalc.replaceAll("[()]", "");
+            int leftIndexCount = 0; // ( 개수
+            int rightIndexCount = 0;// ) 개수
+
+            for (char c : str.toCharArray()) {
+                if (c == '(') leftIndexCount++;
+                else if (c == ')') rightIndexCount++;
+            }
+
+            firstCalc = str.substring(leftIndex, rightIndex+rightIndexCount); // 괄호 식 , + 1은 ( 괄호가 안붙어짐.
+
+            secondCalc = firstCalc.substring(1, firstCalc.length() - 1);
+
             String afterCalc = String.valueOf(run(secondCalc)); // 괄호 결과를 문자로 .
             str = str.replace(firstCalc, afterCalc);
             return run(str);
